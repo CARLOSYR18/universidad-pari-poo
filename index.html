@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Universidad Profesional - Excelencia Académica</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style id="app-style">
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .section {
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #3b82f6;
+            transition: width 0.3s;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .program-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .program-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .modal {
+            transition: opacity 0.3s ease, visibility 0.3s;
+        }
+        .modal.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .news-card {
+            transition: transform 0.3s;
+        }
+        .news-card:hover {
+            transform: scale(1.02);
+        }
+        .event-dot {
+            position: relative;
+        }
+        .event-dot::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #3b82f6;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .calendar-day {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .calendar-day:hover:not(.inactive) {
+            background-color: #dbeafe;
+        }
+        .calendar-day.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .calendar-day.inactive {
+            color: #9ca3af;
+        }
+        .hamburger-menu {
+            width: 24px;
+            height: 18px;
+            position: relative;
+            transform: rotate(0deg);
+            transition: .5s ease-in-out;
+            cursor: pointer;
+        }
+        .hamburger-menu span {
+            display: block;
+            position: absolute;
+            height: 2px;
+            width: 100%;
+            background: #111827;
+            border-radius: 9px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: .25s ease-in-out;
+        }
+        .hamburger-menu span:nth-child(1) {
+            top: 0px;
+        }
+        .hamburger-menu span:nth-child(2), .hamburger-menu span:nth-child(3) {
+            top: 8px;
+        }
+        .hamburger-menu span:nth-child(4) {
+            top: 16px;
+        }
+        .hamburger-menu.open span:nth-child(1) {
+            top: 8px;
+            width: 0%;
+            left: 50%;
+        }
+        .hamburger-menu.open span:nth-child(2) {
+            transform: rotate(45deg);
+        }
+        .hamburger-menu.open span:nth-child(3) {
+            transform: rotate(-45deg);
+        }
+        .hamburger-menu.open span:nth-child(4) {
+            top: 8px;
+            width: 0%;
+            left: 50%;
+        }
+        .slide-down {
+            animation: slideDown 0.5s ease forwards;
+        }
+        @keyframes slideDown {
+            from {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .hero-bg {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url('https://cdn.pixabay.com/photo/2015/11/05/23/02/architecture-1025093_1280.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            z-index: 10;
+        }
+        .badge-blue {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        .badge-green {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        .testimonial-card {
+            transition: transform 0.3s;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+        .stats-item {
+            position: relative;
+        }
+        .stats-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 20%;
+            height: 60%;
+            width: 1px;
+            background-color: #e5e7eb;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="javascript:void(0)" class="flex items-center">
+                <div class="text-blue-600 font-bold text-3xl">UP<span class="text-gray-800">25</span></div>
+                <span class="ml-2 text-gray-700 font-medium hidden sm:inline">Universidad Profesional</span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex">
+                <ul class="flex space-x-8">
+                    <li><a href="#programas" class="nav-link text-gray-700 hover:text-blue-600">Programas</a></li>
+                    <li><a href="#admisiones" class="nav-link text-gray-700 hover:text-blue-600">Admisiones</a></li>
+                    <li><a href="#noticias" class="nav-link text-gray-700 hover:text-blue-600">Noticias</a></li>
+                    <li><a href="#eventos" class="nav-link text-gray-700 hover:text-blue-600">Eventos</a></li>
+                    <li><a href="#portal" class="nav-link text-gray-700 hover:text-blue-600">Portal</a></li>
+                    <li><a href="examen-admision.html" target="_blank" class="nav-link text-gray-700 hover:text-blue-600">Examen de Admisión</a></li>
+                </ul>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <div class="hamburger-menu md:hidden" id="hamburger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div id="mobile-menu" class="md:hidden bg-white shadow-md hidden">
+            <ul class="px-4 py-2">
+                <li><a href="#programas" class="block py-2 text-gray-700 hover:text-blue-600">Programas</a></li>
+                <li><a href="#admisiones" class="block py-2 text-gray-700 hover:text-blue-600">Admisiones</a></li>
+                <li><a href="#noticias" class="block py-2 text-gray-700 hover:text-blue-600">Noticias</a></li>
+                <li><a href="#eventos" class="block py-2 text-gray-700 hover:text-blue-600">Eventos</a></li>
+                <li><a href="#portal" class="block py-2 text-gray-700 hover:text-blue-600">Portal</a></li>
+                <li><a href="examen-admision.html" target="_blank" class="block py-2 text-gray-700 hover:text-blue-600">Examen de Admisión</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-bg text-white min-h-screen flex items-center">
+        <div class="container mx-auto px-4 py-16">
+            <div class="max-w-2xl slide-down">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">Construye tu futuro profesional con nosotros</h1>
+                <p class="text-xl md:text-2xl mb-8">Formamos líderes comprometidos con la excelencia y la innovación para el mundo del mañana</p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#programas" class="bg-blue-600 text-white px-6 py-3 rounded-md font-medium hover:bg-blue-700 transition">Explorar programas</a>
+                    <a href="#admisiones" class="bg-white text-blue-600 px-6 py-3 rounded-md font-medium hover:bg-gray-100 transition">Solicitar admisión</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="bg-white py-12 shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div class="stats-item">
+                    <div class="text-3xl md:text-4xl font-bold text-blue-600">40+</div>
+                    <div class="text-gray-600 mt-2">Programas Académicos</div>
+                </div>
+                <div class="stats-item">
+                    <div class="text-3xl md:text-4xl font-bold text-blue-600">95%</div>
+                    <div class="text-gray-600 mt-2">Tasa de Empleabilidad</div>
+                </div>
+                <div class="stats-item">
+                    <div class="text-3xl md:text-4xl font-bold text-blue-600">15K+</div>
+                    <div class="text-gray-600 mt-2">Estudiantes Activos</div>
+                </div>
+                <div class="stats-item">
+                    <div class="text-3xl md:text-4xl font-bold text-blue-600">85+</div>
+                    <div class="text-gray-600 mt-2">Convenios Internacionales</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Programas Section -->
+    <section id="programas" class="section bg-white">
+        <div class="container mx-auto px-4 py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Información Académica y Programas</h2>
+                <p class="text-gray-600 text-lg max-w-3xl mx-auto">Descubre nuestra amplia oferta académica diseñada para impulsar tu desarrollo profesional en diversos campos del conocimiento.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Program Card 1 -->
+                <div class="program-card bg-white rounded-lg shadow-md overflow-hidden relative">
+                    <div class="badge badge-blue">Destacado</div>
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://cdn.pixabay.com/photo/2018/01/17/07/06/laptop-3087585_1280.jpg" alt="Ingeniería Informática" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="text-sm font-medium text-blue-600 mb-1">Facultad de Ingeniería</div>
+                        <h3 class="text-xl font-semibold mb-3">Ingeniería Informática</h3>
+                        <p class="text-gray-600 mb-4">Especialízate en desarrollo de software, ciberseguridad e inteligencia artificial.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="text-sm text-gray-500">Duración: 10 semestres</div>
+                            <button class="view-program bg-blue-50 text-blue-600 px-4 py-2 rounded font-medium hover:bg-blue-100" data-program="ingenieria-informatica">Ver más</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Program Card 2 -->
+                <div class="program-card bg-white rounded-lg shadow-md overflow-hidden relative">
+                    <div class="badge badge-green">Alto empleo</div>
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://cdn.pixabay.com/photo/2017/10/04/09/56/laboratory-2815641_1280.jpg" alt="Medicina" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="text-sm font-medium text-blue-600 mb-1">Facultad de Ciencias de la Salud</div>
+                        <h3 class="text-xl font-semibold mb-3">Medicina</h3>
+                        <p class="text-gray-600 mb-4">Forma parte de los profesionales que transforman la salud con innovación y excelencia.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="text-sm text-gray-500">Duración: 14 semestres</div>
+                            <button class="view-program bg-blue-50 text-blue-600 px-4 py-2 rounded font-medium hover:bg-blue-100" data-program="medicina">Ver más</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Program Card 3 -->
+                <div class="program-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://cdn.pixabay.com/photo/2015/07/31/11/45/library-869061_1280.jpg" alt="Derecho" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="text-sm font-medium text-blue-600 mb-1">Facultad de Ciencias Jurídicas</div>
+                        <h3 class="text-xl font-semibold mb-3">Derecho</h3>
+                        <p class="text-gray-600 mb-4">Prepárate para defender la justicia con un enfoque ético y competitivo.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="text-sm text-gray-500">Duración: 10 semestres</div>
+                            <button class="view-program bg-blue-50 text-blue-600 px-4 py-2 rounded font-medium hover:bg-blue-100" data-program="derecho">Ver más</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Program Card 4 -->
+                <div class="program-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://cdn.pixabay.com/photo/2020/07/08/04/12/work-5382501_1280.jpg" alt="Administración de Empresas" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="text-sm font-medium text-blue-600 mb-1">Facultad de Economía y Negocios</div>
+                        <h3 class="text-xl font-semibold mb-3">Administración de Empresas</h3>
+                        <p class="text-gray-600 mb-4">Desarrolla habilidades directivas para liderar organizaciones competitivas.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="text-sm text-gray-500">Duración: 8 semestres</div>
+                            <button class="view-program bg-blue-50 text-blue-600 px-4 py-2 rounded font-medium hover:bg-blue-100" data-program="administracion">Ver más</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Program Card 5 -->
+                <div class="program-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://cdn.pixabay.com/photo/2017/08/10/02/05/tiles-shapes-2617112_1280.jpg" alt="Diseño Gráfico" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="text-sm font-medium text-blue-600 mb-1">Facultad de Arte y Diseño</div>
+                        <h3 class="text-xl font-semibold mb-3">Diseño Gráfico</h3>
+                        <p class="text-gray-600 mb-4">Convierte tu creatividad en soluciones visuales impactantes y funcionales.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="text-sm text-gray-500">Duración: 8 semestres</div>
+                            <button class="view-program bg-blue-50 text-blue-600 px-4 py-2 rounded font-medium hover:bg-blue-100" data-program="diseno-grafico">Ver más</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Program Card 6 -->
+                <div class="program-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg" alt="Psicología" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="text-sm font-medium text-blue-600 mb-1">Facultad de Ciencias Humanas</div>
+                        <h3 class="text-xl font-semibold mb-3">Psicología</h3>
+                        <p class="text-gray-600 mb-4">Comprende el comportamiento humano y contribuye al bienestar psicológico.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="text-sm text-gray-500">Duración: 10 semestres</div>
+                            <button class="view-program bg-blue-50 text-blue-600 px-4 py-2 rounded font-medium hover:bg-blue-100" data-program="psicologia">Ver más</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <a href="javascript:void(0)" class="inline-flex items-center justify-center bg-blue-600 text-white px-6 py-3 rounded-md font-medium hover:bg-blue-700 transition">
+                    Ver todos los programas
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Program Modal -->
+    <div id="program-modal" class="modal hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b">
+                <div class="flex justify-between items-center">
+                    <h3 id="modal-title" class="text-2xl font-bold text-gray-800">Detalles del Programa</h3>
+                    <button id="close-modal" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+            </div>
+            <div id="modal-content" class="p-6">
+                <!-- Modal content will be loaded here -->
+            </div>
+            <div class="p-6 border-t bg-gray-50 flex justify-between">
+                <a href="#admisiones" id="apply-program-btn" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Solicitar admisión</a>
+                <button id="close-modal-btn" class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admisiones Section -->
+    <section id="admisiones" class="section bg-gray-50">
+        <div class="container mx-auto px-4 py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Admisiones</h2>
+                <p class="text-gray-600 text-lg max-w-3xl mx-auto">Da el primer paso hacia tu carrera profesional. Completa el formulario para iniciar tu proceso de admisión o realiza el <a href="examen-admision.html" target="_blank" class="text-blue-600 hover:underline">examen de admisión en línea</a>.</p>
+            </div>
+            
+            <!-- Formulario Tab Content -->
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-lg shadow-md p-8">
+                    <form id="admision-form" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="nombre" class="block text-gray-700 font-medium mb-2">Nombre completo *</label>
+                                <input type="text" id="nombre" name="nombre" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                <p class="error-message text-red-500 text-sm hidden mt-1">Este campo es obligatorio.</p>
+                            </div>
+                            
+                            <div>
+                                <label for="identificacion" class="block text-gray-700 font-medium mb-2">Documento de identidad *</label>
+                                <input type="text" id="identificacion" name="identificacion" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                <p class="error-message text-red-500 text-sm hidden mt-1">Este campo es obligatorio.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="correo" class="block text-gray-700 font-medium mb-2">Correo electrónico *</label>
+                                <input type="email" id="correo" name="correo" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                <p class="error-message text-red-500 text-sm hidden mt-1">Ingresa un correo electrónico válido.</p>
+                            </div>
+                            
+                            <div>
+                                <label for="telefono" class="block text-gray-700 font-medium mb-2">Teléfono *</label>
+                                <input type="tel" id="telefono" name="telefono" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                <p class="error-message text-red-500 text-sm hidden mt-1">Ingresa un número de teléfono válido.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="fecha_nacimiento" class="block text-gray-700 font-medium mb-2">Fecha de nacimiento *</label>
+                                <input type="text" id="fecha_nacimiento" name="fecha_nacimiento" class="datepicker w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="DD/MM/AAAA" required>
+                                <p class="error-message text-red-500 text-sm hidden mt-1">Selecciona una fecha válida.</p>
+                            </div>
+                            
+                            <div>
+                                <label for="programa" class="block text-gray-700 font-medium mb-2">Programa de interés *</label>
+                                <select id="programa" name="programa" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                    <option value="">Selecciona un programa</option>
+                                    <option value="Ingeniería Informática">Ingeniería Informática</option>
+                                    <option value="Medicina">Medicina</option>
+                                    <option value="Derecho">Derecho</option>
+                                    <option value="Administración de Empresas">Administración de Empresas</option>
+                                    <option value="Diseño Gráfico">Diseño Gráfico</option>
+                                    <option value="Psicología">Psicología</option>
+                                </select>
+                                <p class="error-message text-red-500 text-sm hidden mt-1">Selecciona un programa de interés.</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="colegio" class="block text-gray-700 font-medium mb-2">Colegio/Institución de procedencia *</label>
+                            <input type="text" id="colegio" name="colegio" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            <p class="error-message text-red-500 text-sm hidden mt-1">Este campo es obligatorio.</p>
+                        </div>
+                        
+                        <div>
+                            <label for="mensaje" class="block text-gray-700 font-medium mb-2">¿Por qué deseas estudiar en nuestra universidad? (opcional)</label>
+                            <textarea id="mensaje" name="mensaje" rows="4" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="privacidad" name="privacidad" class="h-5 w-5 text-blue-600" required>
+                            <label for="privacidad" class="ml-2 text-gray-700">Acepto la política de privacidad y tratamiento de datos personales *</label>
+                        </div>
+                        
+                        <div class="flex justify-between items-center pt-4">
+                            <p class="text-sm text-gray-500">* Campos obligatorios</p>
+                            <button type="submit" class="bg-blue-600 text-white py-3 px-6 rounded-md font-medium hover:bg-blue-700 transition">Enviar solicitud</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonios Section -->
+    <section class="bg-blue-50 py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Voces de nuestra comunidad</h2>
+                <p class="text-gray-600 text-lg max-w-3xl mx-auto">Conoce las experiencias de estudiantes y egresados que han construido su futuro profesional con nosotros.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="testimonial-card bg-white rounded-lg shadow-md p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="h-12 w-12 rounded-full overflow-hidden mr-4">
+                            <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_1280.jpg" alt="Ana Martínez" class="h-full w-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Ana Martínez</h4>
+                            <p class="text-sm text-gray-500">Egresada de Medicina</p>
+                        </div>
+                    </div>
+                    <div class="text-yellow-400 mb-3">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-600">"Mi experiencia en la universidad fue transformadora. Los profesores no solo me brindaron conocimientos teóricos sólidos, sino también experiencias prácticas invaluables que me prepararon para los desafíos de mi profesión."</p>
+                </div>
+                
+                <div class="testimonial-card bg-white rounded-lg shadow-md p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="h-12 w-12 rounded-full overflow-hidden mr-4">
+                            <img src="https://cdn.pixabay.com/photo/2017/11/02/14/26/model-2911330_1280.jpg" alt="Carlos Mendoza" class="h-full w-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Carlos Mendoza</h4>
+                            <p class="text-sm text-gray-500">Estudiante de Ingeniería</p>
+                        </div>
+                    </div>
+                    <div class="text-yellow-400 mb-3">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="text-gray-600">"Los laboratorios equipados con tecnología de punta y las oportunidades de participar en proyectos reales me han permitido aplicar lo aprendido y desarrollar habilidades que son muy valoradas en el mercado laboral."</p>
+                </div>
+                
+                <div class="testimonial-card bg-white rounded-lg shadow-md p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="h-12 w-12 rounded-full overflow-hidden mr-4">
+                            <img src="https://cdn.pixabay.com/photo/2018/04/27/03/50/portrait-3353699_1280.jpg" alt="Laura Sánchez" class="h-full w-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Laura Sánchez</h4>
+                            <p class="text-sm text-gray-500">Egresada de Diseño Gráfico</p>
+                        </div>
+                    </div>
+                    <div class="text-yellow-400 mb-3">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-600">"Gracias a la formación integral y los convenios con empresas, pude realizar prácticas internacionales que ampliaron mi visión profesional. Hoy dirijo mi propio estudio de diseño y sigo vinculada a la universidad como mentora."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Noticias Section -->
+    <section id="noticias" class="section bg-white">
+        <div class="container mx-auto px-4 py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Noticias</h2>
+                <p class="text-gray-600 text-lg max-w-3xl mx-auto">Mantente informado sobre las últimas actividades, logros y eventos de nuestra comunidad universitaria.</p>
+            </div>
+            
+            <div id="news-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- News cards will be loaded here -->
+                <div class="news-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://cdn.pixabay.com/photo/2016/11/29/09/38/adult-1868750_1280.jpg" alt="Noticia 1" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="text-sm text-gray-500 mb-2">15 de Mayo, 2025</div>
+                        <h3 class="text-xl font-semibold mb-3">Nuestra universidad inaugura nuevo edificio de investigación</h3>
+                        <p class="text-gray-600 mb-4">El nuevo centro de investigación permitirá a estudiantes y profesores desarrollar proyectos de vanguardia en diversas disciplinas.</p>
+                        <button class="view-news text-blue-600 font-medium hover:text-blue-800" data-news="1">Leer más</button>
+                    </div>
+                </div>
+                
+                <div class="news-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://cdn.pixabay.com/photo/2015/01/09/11/08/startup-594090_1280.jpg" alt="Noticia 2" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="text-sm text-gray-500 mb-2">10 de Mayo, 2025</div>
+                        <h3 class="text-xl font-semibold mb-3">Convenio internacional con universidades de Europa</h3>
+                        <p class="text-gray-600 mb-4">Estudiantes podrán acceder a programas de intercambio con prestigiosas instituciones académicas europeas.</p>
+                        <button class="view-news text-blue-600 font-medium hover:text-blue-800" data-news="2">Leer más</button>
+                    </div>
+                </div>
+                
+                <div class="news-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://cdn.pixabay.com/photo/2018/05/19/01/23/online-3412498_1280.jpg" alt="Noticia 3" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="text-sm text-gray-500 mb-2">5 de Mayo, 2025</div>
+                        <h3 class="text-xl font-semibold mb-3">Lanzamiento de nueva plataforma digital de aprendizaje</h3>
+                        <p class="text-gray-600 mb-4">La innovadora plataforma facilitará el aprendizaje híbrido y mejorará la experiencia educativa de los estudiantes.</p>
+                        <button class="view-news text-blue-600 font-medium hover:text-blue-800" data-news="3">Leer más</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <button id="load-more-news" class="bg-white border border-blue-600 text-blue-600 px-6 py-2 rounded-md font-medium hover:bg-blue-50 transition">Cargar más noticias</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Modal -->
+    <div id="news-modal" class="modal hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b">
+                <div class="flex justify-between items-center">
+                    <h3 id="news-modal-title" class="text-2xl font-bold text-gray-800">Título de la noticia</h3>
+                    <button class="close-news-modal text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+            </div>
+            <div id="news-modal-content" class="p-6">
+                <!-- News content will be loaded here -->
+            </div>
+            <div class="p-6 border-t bg-gray-50 flex justify-between">
+                <div class="text-sm text-gray-500">
+                    <span id="news-modal-date">Fecha</span> | <span id="news-modal-category">Categoría</span>
+                </div>
+                <button class="close-news-modal px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Eventos Section -->
+    <section id="eventos" class="section bg-gray-50">
+        <div class="container mx-auto px-4 py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Eventos</h2>
+                <p class="text-gray-600 text-lg max-w-3xl mx-auto">Descubre las actividades académicas, culturales y sociales que forman parte de nuestra vibrante vida universitaria.</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <button id="prev-month" class="text-blue-600 hover:text-blue-800">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    </button>
+                    <h3 id="current-month-year" class="text-xl font-bold text-gray-800">Mayo 2025</h3>
+                    <button id="next-month" class="text-blue-600 hover:text-blue-800">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+                
+                <!-- Calendar header -->
+                <div class="grid grid-cols-7 text-center text-gray-500 font-medium">
+                    <div class="py-2">Dom</div>
+                    <div class="py-2">Lun</div>
+                    <div class="py-2">Mar</div>
+                    <div class="py-2">Mié</div>
+                    <div class="py-2">Jue</div>
+                    <div class="py-2">Vie</div>
+                    <div class="py-2">Sáb</div>
+                </div>
+                
+                <!-- Calendar days -->
+                <div id="calendar-days" class="grid grid-cols-7 border-t">
+                    <!-- Days will be loaded here -->
+                </div>
+            </div>
+            
+            <!-- Event details -->
+            <div id="event-details" class="max-w-4xl mx-auto mt-8 bg-white rounded-lg shadow-md p-6 hidden">
+                <h3 id="event-date" class="text-lg font-semibold text-blue-600 mb-4">Eventos para el 15 de Mayo, 2025</h3>
+                <div id="events-list">
+                    <!-- Events will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portal Section -->
+    <section id="portal" class="section bg-white">
+        <div class="container mx-auto px-4 py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Portal de Estudiantes</h2>
+                <p class="text-gray-600 text-lg max-w-3xl mx-auto">Accede a los recursos académicos y servicios digitales diseñados para apoyar tu proceso de aprendizaje.</p>
+            </div>
+            
+            <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Aulas Virtuales -->
+                <div class="bg-gradient-to-br from-blue-500 to-blue-700 text-white rounded-lg shadow-lg p-8 text-center">
+                    <div class="text-5xl mb-4">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Aulas Virtuales</h3>
+                    <p class="mb-6">Accede a tus cursos en línea, materiales de estudio y actividades académicas.</p>
+                    <a href="javascript:void(0)" target="_blank" class="inline-block bg-white text-blue-600 px-6 py-3 rounded-md font-medium hover:bg-gray-100 transition">Ingresar</a>
+                </div>
+                
+                <!-- Biblioteca Digital -->
+                <div class="bg-gradient-to-br from-teal-500 to-teal-700 text-white rounded-lg shadow-lg p-8 text-center">
+                    <div class="text-5xl mb-4">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Biblioteca Digital</h3>
+                    <p class="mb-6">Explora nuestra colección de libros electrónicos, revistas científicas y recursos académicos.</p>
+                    <a href="javascript:void(0)" target="_blank" class="inline-block bg-white text-teal-600 px-6 py-3 rounded-md font-medium hover:bg-gray-100 transition">Explorar</a>
+                </div>
+                
+                <!-- Centro de Descargas -->
+                <div class="bg-gradient-to-br from-indigo-500 to-indigo-700 text-white rounded-lg shadow-lg p-8 text-center">
+                    <div class="text-5xl mb-4">
+                        <i class="fas fa-cloud-download-alt"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Centro de Descargas</h3>
+                    <p class="mb-6">Descarga software académico, plantillas de documentos y recursos complementarios.</p>
+                    <a href="javascript:void(0)" target="_blank" class="inline-block bg-white text-indigo-600 px-6 py-3 rounded-md font-medium hover:bg-gray-100 transition">Descargar</a>
+                </div>
+            </div>
+            
+            <div class="max-w-5xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <a href="javascript:void(0)" class="flex items-center justify-center p-4 bg-gray-100 rounded-md hover:bg-gray-200 transition">
+                    <i class="fas fa-calendar-alt text-blue-600 mr-2"></i>
+                    <span class="text-gray-700 font-medium">Calendario Académico</span>
+                </a>
+                
+                <a href="javascript:void(0)" class="flex items-center justify-center p-4 bg-gray-100 rounded-md hover:bg-gray-200 transition">
+                    <i class="fas fa-file-alt text-blue-600 mr-2"></i>
+                    <span class="text-gray-700 font-medium">Solicitudes y Trámites</span>
+                </a>
+                
+                <a href="javascript:void(0)" class="flex items-center justify-center p-4 bg-gray-100 rounded-md hover:bg-gray-200 transition">
+                    <i class="fas fa-graduation-cap text-blue-600 mr-2"></i>
+                    <span class="text-gray-700 font-medium">Registro Académico</span>
+                </a>
+                
+                <a href="javascript:void(0)" class="flex items-center justify-center p-4 bg-gray-100 rounded-md hover:bg-gray-200 transition">
+                    <i class="fas fa-user-circle text-blue-600 mr-2"></i>
+                    <span class="text-gray-700 font-medium">Perfil Estudiantil</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-200">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Universidad Profesional</h3>
+                    <p class="mb-4">Formando profesionales de excelencia desde 1985, comprometidos con la educación de calidad y la innovación.</p>
+                    <div class="flex space-x-4">
+                        <a href="javascript:void(0)" class="text-gray-300 hover:text-white">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="javascript:void(0)" class="text-gray-300 hover:text-white">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="javascript:void(0)" class="text-gray-300 hover:text-white">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="javascript:void(0)" class="text-gray-300 hover:text-white">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contacto</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3"></i>
+                            <span>Av. Universidad 1234, Ciudad Universitaria</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone-alt mr-3"></i>
+                            <span>+1 (555) 123-4567</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3"></i>
+                            <span>info@universidadprofesional.edu</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Enlaces rápidos</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#programas" class="hover:text-white">Programas Académicos</a></li>
+                        <li><a href="#admisiones" class="hover:text-white">Proceso de Admisión</a></li>
+                        <li><a href="#noticias" class="hover:text-white">Noticias y Eventos</a></li>
+                        <li><a href="#portal" class="hover:text-white">Portal de Estudiantes</a></li>
+                        <li><a href="examen-admision.html" target="_blank" class="hover:text-white">Examen de Admisión</a></li>
+                        <li><a href="javascript:void(0)" class="hover:text-white">Trabaja con Nosotros</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Boletín</h3>
+                    <p class="mb-4">Suscríbete para recibir las últimas noticias y actualizaciones.</p>
+                    <form id="newsletter-form" class="space-y-2">
+                        <input type="email" id="newsletter-email" placeholder="Tu correo electrónico" class="w-full px-4 py-2 bg-gray-700 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <p class="error-message text-red-400 text-sm hidden">Por favor ingresa un correo electrónico válido.</p>
+                        <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded font-medium hover:bg-blue-700 transition">Suscribirse</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-12 pt-8 text-center">
+                <p>&copy; 2025 Universidad Profesional. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script id="app-script">
+        // Mobile Menu Toggle
+        document.getElementById('hamburger-menu').addEventListener('click', function() {
+            this.classList.toggle('open');
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', function() {
+                document.getElementById('hamburger-menu').classList.remove('open');
+                document.getElementById('mobile-menu').classList.add('hidden');
+            });
+        });
+
+        // Inicializar datepicker para fechas
+        flatpickr(".datepicker", {
+            dateFormat: "d/m/Y",
+            maxDate: new Date(),
+            locale: {
+                firstDayOfWeek: 1,
+                weekdays: {
+                    shorthand: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+                    longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
+                },
+                months: {
+                    shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                    longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+                }
+            }
+        });
+
+        // Program Modal Functions
+        const programModal = document.getElementById('program-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalContent = document.getElementById('modal-content');
+        
+        document.querySelectorAll('.view-program').forEach(button => {
+            button.addEventListener('click', function() {
+                const programId = this.getAttribute('data-program');
+                openProgramModal(programId);
+            });
+        });
+        
+        document.getElementById('close-modal').addEventListener('click', closeProgramModal);
+        document.getElementById('close-modal-btn').addEventListener('click', closeProgramModal);
+        document.getElementById('apply-program-btn').addEventListener('click', closeProgramModal);
+        
+        function openProgramModal(programId) {
+            // Program data would come from an API in a real application
+            const programDetails = {
+                'ingenieria-informatica': {
+                    title: 'Ingeniería Informática',
+                    faculty: 'Facultad de Ingeniería',
+                    duration: '10 semestres (5 años)',
+                    degree: 'Ingeniero/a en Informática',
+                    description: 'La carrera de Ingeniería Informática forma profesionales capaces de diseñar, desarrollar e implementar soluciones tecnológicas innovadoras para resolver problemas complejos. El plan de estudios incluye áreas como programación, bases de datos, redes, inteligencia artificial, ciberseguridad y desarrollo de software, combinando conocimientos teóricos con prácticas en laboratorios equipados con tecnología de punta.',
+                    opportunities: 'Los egresados pueden desempeñarse en empresas de desarrollo de software, consultoras tecnológicas, departamentos de TI de organizaciones públicas y privadas, o emprender sus propios proyectos de base tecnológica.',
+                    specializations: ['Desarrollo de Software', 'Inteligencia Artificial', 'Ciberseguridad', 'Sistemas Distribuidos', 'Análisis de Datos'],
+                    image: 'https://cdn.pixabay.com/photo/2016/11/19/14/00/code-1839406_1280.jpg'
+                },
+                'medicina': {
+                    title: 'Medicina',
+                    faculty: 'Facultad de Ciencias de la Salud',
+                    duration: '14 semestres (7 años)',
+                    degree: 'Médico/a Cirujano/a',
+                    description: 'La carrera de Medicina forma profesionales con sólidos conocimientos científicos y habilidades clínicas para la prevención, diagnóstico y tratamiento de enfermedades. El plan de estudios integra ciencias básicas, ciencias clínicas y prácticas hospitalarias, con un enfoque humanista centrado en la atención integral del paciente y la ética médica.',
+                    opportunities: 'Los egresados pueden desarrollarse en hospitales públicos y privados, centros de salud, clínicas especializadas, instituciones de investigación médica, y continuar su formación con especialidades médicas.',
+                    specializations: ['Medicina Interna', 'Cirugía', 'Pediatría', 'Ginecología y Obstetricia', 'Medicina Familiar', 'Investigación Biomédica'],
+                    image: 'https://cdn.pixabay.com/photo/2017/03/12/02/20/hospital-2136342_1280.jpg'
+                },
+                'derecho': {
+                    title: 'Derecho',
+                    faculty: 'Facultad de Ciencias Jurídicas',
+                    duration: '10 semestres (5 años)',
+                    degree: 'Licenciado/a en Derecho',
+                    description: 'La carrera de Derecho forma profesionales con amplio conocimiento del sistema jurídico, capacitados para interpretar y aplicar las leyes en diversos contextos. El plan de estudios abarca derecho civil, penal, laboral, constitucional, mercantil, entre otros, desarrollando competencias para la litigación, asesoría legal, mediación y resolución alternativa de conflictos.',
+                    opportunities: 'Los egresados pueden ejercer como abogados litigantes, asesores legales en empresas, funcionarios del sistema judicial, notarios, funcionarios públicos, o dedicarse a la investigación y docencia jurídica.',
+                    specializations: ['Derecho Corporativo', 'Derecho Penal', 'Derecho Internacional', 'Derechos Humanos', 'Propiedad Intelectual'],
+                    image: 'https://cdn.pixabay.com/photo/2018/04/07/13/11/justice-3298892_1280.jpg'
+                },
+                'administracion': {
+                    title: 'Administración de Empresas',
+                    faculty: 'Facultad de Economía y Negocios',
+                    duration: '8 semestres (4 años)',
+                    degree: 'Licenciado/a en Administración de Empresas',
+                    description: 'La carrera de Administración de Empresas forma profesionales capaces de gestionar recursos organizacionales y liderar equipos de trabajo en entornos competitivos y cambiantes. El plan de estudios incluye áreas como gestión estratégica, finanzas, marketing, recursos humanos, operaciones y emprendimiento, con un enfoque práctico a través de casos de estudio y proyectos empresariales.',
+                    opportunities: 'Los egresados pueden desempeñarse como gerentes, consultores empresariales, analistas financieros, ejecutivos de marketing, gestores de recursos humanos, o emprender sus propios negocios.',
+                    specializations: ['Gestión Estratégica', 'Finanzas Corporativas', 'Marketing Digital', 'Gestión del Talento Humano', 'Emprendimiento e Innovación'],
+                    image: 'https://cdn.pixabay.com/photo/2017/01/14/10/56/people-1979261_1280.jpg'
+                },
+                'diseno-grafico': {
+                    title: 'Diseño Gráfico',
+                    faculty: 'Facultad de Arte y Diseño',
+                    duration: '8 semestres (4 años)',
+                    degree: 'Licenciado/a en Diseño Gráfico',
+                    description: 'La carrera de Diseño Gráfico forma profesionales creativos capaces de comunicar visualmente conceptos e ideas a través de diversos medios y plataformas. El plan de estudios integra teoría del diseño, fundamentos artísticos, herramientas tecnológicas y estrategias comunicacionales, con un enfoque en la resolución de problemas de comunicación visual.',
+                    opportunities: 'Los egresados pueden trabajar en agencias de publicidad, estudios de diseño, departamentos de marketing, empresas editoriales, productoras audiovisuales, o como diseñadores independientes y directores creativos.',
+                    specializations: ['Diseño Editorial', 'Diseño Web y UX/UI', 'Branding e Identidad Corporativa', 'Ilustración', 'Motion Graphics'],
+                    image: 'https://cdn.pixabay.com/photo/2020/08/09/14/25/business-5475661_1280.jpg'
+                },
+                'psicologia': {
+                    title: 'Psicología',
+                    faculty: 'Facultad de Ciencias Humanas',
+                    duration: '10 semestres (5 años)',
+                    degree: 'Licenciado/a en Psicología',
+                    description: 'La carrera de Psicología forma profesionales con conocimientos científicos sobre el comportamiento humano y procesos mentales, capacitados para la evaluación, diagnóstico e intervención en diversos contextos. El plan de estudios abarca psicología clínica, educativa, organizacional, social y neuropsicología, con prácticas supervisadas en diferentes ámbitos de aplicación.',
+                    opportunities: 'Los egresados pueden trabajar en centros de salud mental, instituciones educativas, departamentos de recursos humanos, organizaciones sociales, centros de investigación, o establecer su propia consulta privada.',
+                    specializations: ['Psicología Clínica', 'Psicología Educativa', 'Psicología Organizacional', 'Neuropsicología', 'Psicología Social y Comunitaria'],
+                    image: 'https://cdn.pixabay.com/photo/2016/02/07/21/03/computer-1185626_1280.jpg'
+                }
+            };
+
+            const program = programDetails[programId];
+            
+            if (program) {
+                modalTitle.textContent = program.title;
+                
+                let content = `
+                    <div class="space-y-6">
+                        <div class="h-64 overflow-hidden rounded-lg mb-4">
+                            <img src="${program.image}" alt="${program.title}" class="w-full h-full object-cover">
+                        </div>
+                        
+                        <div class="flex flex-col md:flex-row md:items-center justify-between bg-blue-50 p-4 rounded-lg">
+                            <div>
+                                <div class="text-blue-600 font-medium">${program.faculty}</div>
+                                <div class="text-gray-700"><strong>Duración:</strong> ${program.duration}</div>
+                                <div class="text-gray-700"><strong>Título:</strong> ${program.degree}</div>
+                            </div>
+                            <div class="mt-4 md:mt-0">
+                                <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Admisiones Abiertas</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">Descripción del Programa</h4>
+                            <p class="text-gray-700">${program.description}</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">Oportunidades Profesionales</h4>
+                            <p class="text-gray-700">${program.opportunities}</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">Áreas de Especialización</h4>
+                            <div class="flex flex-wrap gap-2">
+                                ${program.specializations.map(spec => `
+                                    <span class="bg-gray-100 text-gray-800 text-sm font-medium px-2.5 py-0.5 rounded">${spec}</span>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div class="border-t pt-4">
+                            <h4 class="text-lg font-semibold mb-2">Plan de Estudios</h4>
+                            <button id="view-study-plan" class="text-blue-600 hover:text-blue-800 flex items-center">
+                                <i class="fas fa-file-pdf mr-2"></i>
+                                Descargar PDF del plan de estudios
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                modalContent.innerHTML = content;
+                programModal.classList.remove('hidden');
+
+                // Simular click en "Descargar PDF"
+                document.getElementById('view-study-plan').addEventListener('click', function() {
+                    Swal.fire({
+                        title: 'Descarga simulada',
+                        text: 'En un sitio web real, aquí se descargaría el PDF del plan de estudios.',
+                        icon: 'info',
+                        confirmButtonText: 'Entendido',
+                        confirmButtonColor: '#3b82f6'
+                    });
+                });
+            }
+        }
+        
+        function closeProgramModal() {
+            programModal.classList.add('hidden');
+        }
+
+        // Form Validation for Admisiones
+        const admisionForm = document.getElementById('admision-form');
+        
+        if (admisionForm) {
+            admisionForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                let isValid = true;
+                const formFields = admisionForm.querySelectorAll('input[required], select[required]');
+                
+                formFields.forEach(field => {
+                    const errorMessage = field.nextElementSibling;
+                    
+                    if (field.type === 'email') {
+                        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!emailPattern.test(field.value)) {
+                            errorMessage.classList.remove('hidden');
+                            isValid = false;
+                        } else {
+                            errorMessage.classList.add('hidden');
+                        }
+                    } else if (field.type === 'tel') {
+                        const phonePattern = /^[0-9\s\-\+]{7,15}$/;
+                        if (!phonePattern.test(field.value)) {
+                            errorMessage.classList.remove('hidden');
+                            isValid = false;
+                        } else {
+                            errorMessage.classList.add('hidden');
+                        }
+                    } else if (field.value.trim() === '' || (field.tagName === 'SELECT' && field.value === '')) {
+                        errorMessage.classList.remove('hidden');
+                        isValid = false;
+                    } else {
+                        errorMessage.classList.add('hidden');
+                    }
+                });
+                
+                if (isValid) {
+                    // Simulación de envío de formulario
+                    Swal.fire({
+                        title: '¡Formulario enviado!',
+                        text: 'Tu solicitud ha sido recibida correctamente. Nos pondremos en contacto contigo pronto.',
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar',
+                        confirmButtonColor: '#3b82f6'
+                    }).then(() => {
+                        admisionForm.reset();
+                    });
+                    
+                    // En una aplicación real, aquí se enviaría el formulario al servidor
+                }
+            });
+        }
+
+        // News Functions
+        const newsData = [
+            {
+                id: 1,
+                title: "Nuestra universidad inaugura nuevo edificio de investigación",
+                date: "15 de Mayo, 2025",
+                category: "Infraestructura",
+                summary: "El nuevo centro de investigación permitirá a estudiantes y profesores desarrollar proyectos de vanguardia en diversas disciplinas.",
+                content: `
+                    <p class="mb-4">Con una inversión de más de 5 millones de dólares, nuestra universidad ha inaugurado un nuevo edificio dedicado exclusivamente a la investigación multidisciplinaria, consolidando nuestro compromiso con la innovación y el avance científico.</p>
+                    
+                    <p class="mb-4">El Centro de Investigación Avanzada (CIA) cuenta con 12 laboratorios especializados, equipados con tecnología de última generación para el desarrollo de proyectos en áreas como biotecnología, nanotecnología, inteligencia artificial, energías renovables y ciencias de los materiales.</p>
+                    
+                    <p class="mb-4">Durante la ceremonia de inauguración, el Rector destacó: "Este nuevo espacio no solo representa una mejora en nuestra infraestructura, sino un paso decisivo hacia la consolidación de nuestra universidad como un referente en investigación a nivel internacional. Aquí se generarán las soluciones a los grandes desafíos que enfrenta nuestra sociedad".</p>
+                    
+                    <p class="mb-4">El edificio ha sido diseñado bajo estrictos criterios de sostenibilidad, incorporando sistemas de energía solar, recolección de agua de lluvia y materiales ecológicos, lo que le ha valido la certificación LEED Gold, convirtiéndose en uno de los edificios universitarios más sostenibles del país.</p>
+                    
+                    <p class="mb-4">Los estudiantes de pregrado y posgrado tendrán acceso a estas instalaciones para desarrollar sus proyectos de tesis y participar en grupos de investigación, fortaleciendo la cultura investigativa y la formación de futuros científicos e innovadores.</p>
+                `,
+                image: "https://cdn.pixabay.com/photo/2016/11/29/09/38/adult-1868750_1280.jpg"
+            },
+            {
+                id: 2,
+                title: "Convenio internacional con universidades de Europa",
+                date: "10 de Mayo, 2025",
+                category: "Internacional",
+                summary: "Estudiantes podrán acceder a programas de intercambio con prestigiosas instituciones académicas europeas.",
+                content: `
+                    <p class="mb-4">Nuestra universidad ha firmado un ambicioso convenio de cooperación académica con el Consorcio Universitario Europeo (CUE), que integra a 15 prestigiosas instituciones de educación superior de España, Francia, Alemania, Italia y Reino Unido.</p>
+                    
+                    <p class="mb-4">Este acuerdo, que entrará en vigor a partir del próximo semestre académico, permitirá a nuestros estudiantes realizar intercambios académicos de un semestre o un año completo, con pleno reconocimiento de los créditos cursados. Asimismo, docentes e investigadores podrán participar en proyectos conjuntos y estancias académicas.</p>
+                    
+                    <p class="mb-4">La Directora de Relaciones Internacionales explicó: "Este convenio abre oportunidades sin precedentes para nuestra comunidad universitaria. Nuestros estudiantes podrán enriquecer su formación en algunas de las mejores universidades del mundo, mientras que nuestros profesores ampliarán sus redes de colaboración científica a nivel global".</p>
+                    
+                    <p class="mb-4">Entre las universidades participantes se encuentran la Universidad Complutense de Madrid, la Sorbona de París, la Universidad Libre de Berlín, la Universidad de Bolonia y la Universidad de Oxford, todas ellas referentes mundiales en educación superior e investigación.</p>
+                    
+                    <p class="mb-4">El convenio también contempla la creación de programas de doble titulación en áreas estratégicas como ciencias de la computación, administración de empresas, ingeniería sostenible y ciencias biomédicas, fortaleciendo significativamente la proyección internacional de nuestros graduados.</p>
+                `,
+                image: "https://cdn.pixabay.com/photo/2015/01/09/11/08/startup-594090_1280.jpg"
+            },
+            {
+                id: 3,
+                title: "Lanzamiento de nueva plataforma digital de aprendizaje",
+                date: "5 de Mayo, 2025",
+                category: "Tecnología Educativa",
+                summary: "La innovadora plataforma facilitará el aprendizaje híbrido y mejorará la experiencia educativa de los estudiantes.",
+                content: `
+                    <p class="mb-4">Nuestra universidad ha dado un importante paso en la transformación digital de la educación con el lanzamiento de "EduConnect", una plataforma de aprendizaje de última generación diseñada para potenciar la experiencia educativa en entornos presenciales, híbridos y virtuales.</p>
+                    
+                    <p class="mb-4">Desarrollada por un equipo multidisciplinario de especialistas en tecnología educativa, diseño instruccional y experiencia de usuario, EduConnect integra herramientas avanzadas de colaboración, evaluación continua, analíticas de aprendizaje e inteligencia artificial para personalizar la experiencia educativa de cada estudiante.</p>
+                    
+                    <p class="mb-4">El Vicerrector Académico señaló: "EduConnect representa nuestra visión de la educación del futuro: flexible, personalizada, colaborativa y centrada en las necesidades de cada estudiante. Esta plataforma no solo digitaliza contenidos, sino que transforma profundamente la manera en que enseñamos y aprendemos".</p>
+                    
+                    <p class="mb-4">Entre las funcionalidades más destacadas se encuentran los laboratorios virtuales para prácticas simuladas, espacios de co-creación para proyectos colaborativos, sistemas de retroalimentación automatizada y un asistente virtual que guía el proceso de aprendizaje de cada estudiante según sus fortalezas y áreas de mejora.</p>
+                    
+                    <p class="mb-4">Durante este semestre, más de 200 profesores han recibido capacitación intensiva para aprovechar al máximo las posibilidades pedagógicas de esta nueva plataforma, que se implementará gradualmente en todos los programas académicos durante el próximo año.</p>
+                `,
+                image: "https://cdn.pixabay.com/photo/2018/05/19/01/23/online-3412498_1280.jpg"
+            },
+            {
+                id: 4,
+                title: "Estudiantes ganan competencia internacional de robótica",
+                date: "28 de Abril, 2025",
+                category: "Logros Estudiantiles",
+                summary: "El equipo de ingeniería superó a más de 50 universidades con su innovador diseño de robot autónomo.",
+                content: `
+                    <p class="mb-4">El equipo "RoboTech" de nuestra Facultad de Ingeniería ha conquistado el primer lugar en la prestigiosa Competencia Internacional de Robótica Universitaria (CIRU) celebrada en Tokio, Japón, superando a más de 50 equipos de universidades de todo el mundo.</p>
+                    
+                    <p class="mb-4">Los estudiantes presentaron un robot autónomo denominado "EcoBot", diseñado para la recolección y clasificación de residuos en entornos acuáticos contaminados. El prototipo utiliza sistemas avanzados de visión artificial, aprendizaje automático y propulsión eficiente para identificar, recolectar y clasificar diferentes tipos de residuos plásticos en ríos y costas.</p>
+                    
+                    <p class="mb-4">El jurado internacional destacó la innovación, funcionalidad y potencial impacto ambiental del proyecto, así como la excelente integración de tecnologías emergentes para resolver problemas reales.</p>
+                    
+                    <p class="mb-4">"Este logro es el resultado de dos años de trabajo intenso, muchas noches sin dormir y una pasión compartida por crear tecnología con propósito", comentó María González, líder del equipo. "Queremos demostrar que la robótica puede ser una herramienta poderosa para enfrentar los desafíos ambientales".</p>
+                    
+                    <p class="mb-4">El premio incluye un fondo de 50,000 dólares para continuar el desarrollo del prototipo, así como oportunidades de prácticas profesionales en empresas líderes del sector tecnológico en Japón y Estados Unidos.</p>
+                `,
+                image: "https://cdn.pixabay.com/photo/2019/03/21/15/51/robot-4071563_1280.jpg"
+            },
+            {
+                id: 5,
+                title: "Facultad de Medicina recibe acreditación internacional",
+                date: "15 de Abril, 2025",
+                category: "Acreditaciones",
+                summary: "La certificación otorgada por la Federación Mundial de Educación Médica reconoce la excelencia académica del programa.",
+                content: `
+                    <p class="mb-4">Tras un riguroso proceso de evaluación que se extendió por más de dos años, nuestra Facultad de Medicina ha recibido la prestigiosa acreditación internacional otorgada por la Federación Mundial de Educación Médica (WFME), convirtiéndose en una de las pocas facultades del país en obtener este reconocimiento.</p>
+                    
+                    <p class="mb-4">La acreditación evalúa aspectos como la calidad del plan de estudios, la competencia del cuerpo docente, la infraestructura de enseñanza clínica, los resultados de aprendizaje, los sistemas de evaluación y seguimiento a graduados, entre otros factores determinantes para la formación de médicos de clase mundial.</p>
+                    
+                    <p class="mb-4">El Decano de la Facultad expresó: "Esta acreditación no solo valida la calidad de nuestro programa, sino que también garantiza que nuestros egresados pueden ejercer su profesión en cualquier parte del mundo, ampliando significativamente sus oportunidades profesionales".</p>
+                    
+                    <p class="mb-4">Los evaluadores internacionales destacaron particularmente el modelo de integración temprana de los estudiantes en entornos clínicos, el sistema de simulación médica avanzada, y los programas de investigación traslacional que conectan las ciencias básicas con la práctica clínica.</p>
+                    
+                    <p class="mb-4">La acreditación tiene una vigencia de siete años y coloca a nuestra Facultad de Medicina entre el selecto grupo de instituciones reconocidas por cumplir con los más altos estándares internacionales en educación médica.</p>
+                `,
+                image: "https://cdn.pixabay.com/photo/2016/11/23/14/37/blur-1853262_1280.jpg"
+            },
+            {
+                id: 6,
+                title: "La universidad lanza fondo para emprendimientos estudiantiles",
+                date: "5 de Abril, 2025",
+                category: "Emprendimiento",
+                summary: "El programa destinará 1 millón de dólares para financiar proyectos innovadores desarrollados por estudiantes y egresados.",
+                content: `
+                    <p class="mb-4">Nuestra universidad ha anunciado la creación del "Fondo Semilla UP25", un ambicioso programa que destinará 1 millón de dólares para impulsar emprendimientos innovadores desarrollados por estudiantes y egresados de los últimos cinco años.</p>
+                    
+                    <p class="mb-4">El fondo financiará hasta 20 proyectos al año con capital semilla que oscilará entre los 10,000 y 100,000 dólares, según la etapa de desarrollo y potencial de impacto de cada emprendimiento. Además del apoyo económico, los proyectos seleccionados recibirán mentoría especializada, espacio de trabajo en la incubadora universitaria y acceso a la red de inversionistas asociados a la universidad.</p>
+                    
+                    <p class="mb-4">"Queremos ser un puente entre el talento universitario y el ecosistema de innovación global", explicó el director del Centro de Emprendimiento. "Muchos de nuestros estudiantes tienen ideas brillantes que pueden transformarse en empresas exitosas si reciben el apoyo adecuado en las etapas iniciales".</p>
+                    
+                    <p class="mb-4">El fondo dará prioridad a proyectos enfocados en áreas estratégicas como tecnologías verdes, salud digital, educación del futuro, ciudades inteligentes y soluciones para la economía circular, aunque estará abierto a propuestas innovadoras en cualquier sector.</p>
+                    
+                    <p class="mb-4">La primera convocatoria se abrirá el próximo mes y contará con un comité evaluador integrado por académicos, empresarios exitosos e inversionistas de capital de riesgo, garantizando una selección rigurosa y una visión multidimensional del potencial de cada proyecto.</p>
+                `,
+                image: "https://cdn.pixabay.com/photo/2017/07/31/11/14/laptop-2557571_1280.jpg"
+            }
+        ];
+
+        document.querySelectorAll('.view-news').forEach(button => {
+            button.addEventListener('click', function() {
+                const newsId = this.getAttribute('data-news');
+                openNewsModal(newsId);
+            });
+        });
+        
+        document.querySelectorAll('.close-news-modal').forEach(button => {
+            button.addEventListener('click', closeNewsModal);
+        });
+        
+        function openNewsModal(newsId) {
+            const newsItem = newsData.find(item => item.id == newsId);
+            
+            if (newsItem) {
+                document.getElementById('news-modal-title').textContent = newsItem.title;
+                document.getElementById('news-modal-date').textContent = newsItem.date;
+                document.getElementById('news-modal-category').textContent = newsItem.category;
+                
+                let content = `
+                    <div class="space-y-6">
+                        <div class="h-64 overflow-hidden rounded-lg">
+                            <img src="${newsItem.image}" alt="${newsItem.title}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="news-content text-gray-700">
+                            ${newsItem.content}
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('news-modal-content').innerHTML = content;
+                document.getElementById('news-modal').classList.remove('hidden');
+            }
+        }
+        
+        function closeNewsModal() {
+            document.getElementById('news-modal').classList.add('hidden');
+        }
+
+        let newsPageCount = 1;
+        document.getElementById('load-more-news').addEventListener('click', function() {
+            if (newsPageCount === 1) {
+                // Cargar más noticias (en un sitio real, esto se haría con una llamada a la API)
+                const newsContainer = document.getElementById('news-container');
+                
+                // Noticias adicionales
+                const additionalNewsHTML = `
+                    <div class="news-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="h-48 overflow-hidden">
+                            <img src="https://cdn.pixabay.com/photo/2019/03/21/15/51/robot-4071563_1280.jpg" alt="Noticia 4" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <div class="text-sm text-gray-500 mb-2">28 de Abril, 2025</div>
+                            <h3 class="text-xl font-semibold mb-3">Estudiantes ganan competencia internacional de robótica</h3>
+                            <p class="text-gray-600 mb-4">El equipo de ingeniería superó a más de 50 universidades con su innovador diseño de robot autónomo.</p>
+                            <button class="view-news text-blue-600 font-medium hover:text-blue-800" data-news="4">Leer más</button>
+                        </div>
+                    </div>
+                    
+                    <div class="news-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="h-48 overflow-hidden">
+                            <img src="https://cdn.pixabay.com/photo/2016/11/23/14/37/blur-1853262_1280.jpg" alt="Noticia 5" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <div class="text-sm text-gray-500 mb-2">15 de Abril, 2025</div>
+                            <h3 class="text-xl font-semibold mb-3">Facultad de Medicina recibe acreditación internacional</h3>
+                            <p class="text-gray-600 mb-4">La certificación otorgada por la Federación Mundial de Educación Médica reconoce la excelencia académica del programa.</p>
+                            <button class="view-news text-blue-600 font-medium hover:text-blue-800" data-news="5">Leer más</button>
+                        </div>
+                    </div>
+                    
+                    <div class="news-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="h-48 overflow-hidden">
+                            <img src="https://cdn.pixabay.com/photo/2017/07/31/11/14/laptop-2557571_1280.jpg" alt="Noticia 6" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <div class="text-sm text-gray-500 mb-2">5 de Abril, 2025</div>
+                            <h3 class="text-xl font-semibold mb-3">La universidad lanza fondo para emprendimientos estudiantiles</h3>
+                            <p class="text-gray-600 mb-4">El programa destinará 1 millón de dólares para financiar proyectos innovadores desarrollados por estudiantes y egresados.</p>
+                            <button class="view-news text-blue-600 font-medium hover:text-blue-800" data-news="6">Leer más</button>
+                        </div>
+                    </div>
+                `;
+                
+                newsContainer.innerHTML += additionalNewsHTML;
+                
+                // Actualizar el contador de páginas
+                newsPageCount++;
+                
+                // Añadir event listeners a los nuevos botones
+                document.querySelectorAll('.view-news').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const newsId = this.getAttribute('data-news');
+                        openNewsModal(newsId);
+                    });
+                });
+                
+                // Cambiar el texto del botón o deshabilitarlo si no hay más páginas
+                this.textContent = "No hay más noticias";
+                this.classList.add('opacity-50');
+                this.disabled = true;
+            }
+        });
+
+        // Calendar and Events Functions
+        const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        let currentDate = new Date();
+        let currentMonth = currentDate.getMonth();
+        let currentYear = currentDate.getFullYear();
+        
+        // Datos de eventos (en una aplicación real, estos vendrían de una API)
+        const events = {
+            "2025-05-15": [
+                {
+                    id: 1,
+                    title: "Jornada de Puertas Abiertas",
+                    time: "10:00 - 16:00",
+                    location: "Campus Principal",
+                    description: "Visita nuestras instalaciones, conoce a profesores y estudiantes, y descubre todo lo que nuestra universidad tiene para ofrecerte."
+                },
+                {
+                    id: 2,
+                    title: "Conferencia: 'Inteligencia Artificial y el Futuro del Trabajo'",
+                    time: "18:00 - 20:00",
+                    location: "Auditorio Central",
+                    description: "El Dr. Carlos Méndez, experto en IA, analizará cómo esta tecnología está transformando los entornos laborales y qué habilidades serán clave en el futuro."
+                }
+            ],
+            "2025-05-20": [
+                {
+                    id: 3,
+                    title: "Taller de Emprendimiento",
+                    time: "14:00 - 17:00",
+                    location: "Centro de Innovación",
+                    description: "Aprende las bases para convertir tu idea en un proyecto viable con nuestros mentores especializados en startups tecnológicas."
+                }
+            ],
+            "2025-05-25": [
+                {
+                    id: 4,
+                    title: "Competencia de Programación",
+                    time: "09:00 - 18:00",
+                    location: "Laboratorios de Informática",
+                    description: "Demuestra tus habilidades de codificación en esta competencia que reúne a los mejores programadores de la región."
+                }
+            ]
+        };
+        
+        function renderCalendar() {
+            document.getElementById('current-month-year').textContent = `${months[currentMonth]} ${currentYear}`;
+            
+            const daysContainer = document.getElementById('calendar-days');
+            daysContainer.innerHTML = '';
+            
+            // Primer día del mes actual
+            const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+            
+            // Último día del mes actual
+            const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
+            
+            // Día de la semana del primer día (0 = domingo, 6 = sábado)
+            const firstDayOfWeek = firstDayOfMonth.getDay();
+            
+            // Número de días en el mes
+            const daysInMonth = lastDayOfMonth.getDate();
+            
+            // Agregar celdas vacías para los días anteriores al primer día del mes
+            for (let i = 0; i < firstDayOfWeek; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day inactive py-3 border';
+                daysContainer.appendChild(emptyDay);
+            }
+            
+            // Agregar los días del mes
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day py-3 border text-center';
+                
+                // Formatear la fecha para buscar eventos
+                const dateString = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                
+                // Verificar si hay eventos para este día
+                if (events[dateString]) {
+                    dayElement.className += ' event-dot font-medium';
+                }
+                
+                dayElement.textContent = day;
+                dayElement.setAttribute('data-date', dateString);
+                
+                // Agregar evento click para mostrar los eventos del día
+                dayElement.addEventListener('click', function() {
+                    // Remover clase activa de todos los días
+                    document.querySelectorAll('.calendar-day').forEach(day => {
+                        day.classList.remove('active');
+                    });
+                    
+                    // Agregar clase activa al día seleccionado
+                    this.classList.add('active');
+                    
+                    const selectedDate = this.getAttribute('data-date');
+                    showEvents(selectedDate);
+                });
+                
+                daysContainer.appendChild(dayElement);
+            }
+        }
+        
+        function showEvents(dateString) {
+            const eventsList = document.getElementById('events-list');
+            const eventDetails = document.getElementById('event-details');
+            
+            // Formatear la fecha para mostrarla
+            const [year, month, day] = dateString.split('-');
+            const formattedDate = `${day} de ${months[parseInt(month) - 1]}, ${year}`;
+            
+            document.getElementById('event-date').textContent = `Eventos para el ${formattedDate}`;
+            
+            if (events[dateString] && events[dateString].length > 0) {
+                let eventsHTML = '';
+                
+                events[dateString].forEach(event => {
+                    eventsHTML += `
+                        <div class="bg-white rounded-lg shadow p-4 mb-4">
+                            <h4 class="text-lg font-semibold mb-2">${event.title}</h4>
+                            <div class="flex items-center text-sm text-gray-600 mb-2">
+                                <i class="far fa-clock mr-2"></i>
+                                <span>${event.time}</span>
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600 mb-3">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                <span>${event.location}</span>
+                            </div>
+                            <p class="text-gray-700">${event.description}</p>
+                        </div>
+                    `;
+                });
+                
+                eventsList.innerHTML = eventsHTML;
+                eventDetails.classList.remove('hidden');
+            } else {
+                eventsList.innerHTML = `
+                    <div class="text-center py-8">
+                        <i class="far fa-calendar-times text-4xl text-gray-400 mb-3"></i>
+                        <p class="text-gray-500">No hay eventos programados para esta fecha.</p>
+                    </div>
+                `;
+                eventDetails.classList.remove('hidden');
+            }
+        }
+        
+        document.getElementById('prev-month').addEventListener('click', function() {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar();
+            document.getElementById('event-details').classList.add('hidden');
+        });
+        
+        document.getElementById('next-month').addEventListener('click', function() {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderCalendar();
+            document.getElementById('event-details').classList.add('hidden');
+        });
+        
+        // Inicializar el calendario
+        renderCalendar();
+
+        // Newsletter Subscription
+        const newsletterForm = document.getElementById('newsletter-form');
+        
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const emailInput = document.getElementById('newsletter-email');
+                const errorMessage = emailInput.nextElementSibling;
+                
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                
+                if (!emailPattern.test(emailInput.value)) {
+                    errorMessage.classList.remove('hidden');
+                } else {
+                    errorMessage.classList.add('hidden');
+                    
+                    // Simulación de suscripción exitosa
+                    Swal.fire({
+                        title: '¡Suscripción exitosa!',
+                        text: 'Gracias por suscribirte a nuestro boletín. Te enviaremos las últimas noticias y actualizaciones.',
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar',
+                        confirmButtonColor: '#3b82f6'
+                    }).then(() => {
+                        emailInput.value = '';
+                    });
+                    
+                    // En una aplicación real, aquí se enviaría el formulario al servidor
+                }
+            });
+        }
+    </script>
+</body>
+</html>

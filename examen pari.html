@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Examen de Admisión - Universidad Profesional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style id="app-style">
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        .exam-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .exam-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+        .exam-option {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .exam-option:hover {
+            background-color: #f3f4f6;
+        }
+        .exam-option.selected {
+            background-color: #dbeafe;
+            border-color: #3b82f6;
+        }
+        .loader {
+            border: 3px solid #f3f4f6;
+            border-radius: 50%;
+            border-top: 3px solid #3b82f6;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .question-container {
+            min-height: 300px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container">
+        <div class="exam-header">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Examen de Admisión</h1>
+            <p class="text-gray-600">Universidad Profesional - 2025</p>
+        </div>
+        
+        <div class="exam-container">
+            <!-- Formulario de ingreso -->
+            <div id="registration-form" class="p-6">
+                <h2 class="text-xl font-semibold mb-4">Información del estudiante</h2>
+                <form id="student-form" class="space-y-4">
+                    <div>
+                        <label for="student-name" class="block text-gray-700 font-medium mb-1">Nombre completo *</label>
+                        <input type="text" id="student-name" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <p id="name-error" class="text-red-500 text-sm mt-1 hidden">Por favor ingresa tu nombre completo.</p>
+                    </div>
+                    
+                    <div>
+                        <label for="student-email" class="block text-gray-700 font-medium mb-1">Correo electrónico *</label>
+                        <input type="email" id="student-email" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <p id="email-error" class="text-red-500 text-sm mt-1 hidden">Por favor ingresa un correo electrónico válido.</p>
+                    </div>
+                    
+                    <div class="pt-4">
+                        <button type="submit" id="start-exam-btn" class="w-full bg-blue-600 text-white py-3 px-6 rounded-md font-medium hover:bg-blue-700 transition">
+                            <span id="start-btn-text">Iniciar examen</span>
+                            <span id="start-btn-loader" class="loader hidden"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Examen -->
+            <div id="exam-container" class="hidden">
+                <div class="border-b p-4 flex justify-between items-center bg-gray-50">
+                    <div>
+                        <span id="student-name-display" class="font-medium text-gray-800"></span>
+                    </div>
+                    <div>
+                        <span id="question-progress" class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">Pregunta 1 de 4</span>
+                    </div>
+                </div>
+                
+                <div class="p-6 question-container">
+                    <div id="question-container" class="mb-6">
+                        <!-- Preguntas se cargarán dinámicamente -->
+                    </div>
+                </div>
+                
+                <div class="p-4 border-t bg-gray-50 flex justify-between">
+                    <button id="prev-question" class="bg-gray-200 text-gray-700 py-2 px-4 rounded-md font-medium hover:bg-gray-300 transition flex items-center disabled:opacity-50" disabled>
+                        <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                        Anterior
+                    </button>
+                    
+                    <button id="next-question" class="bg-blue-600 text-white py-2 px-4 rounded-md font-medium hover:bg-blue-700 transition flex items-center">
+                        Siguiente
+                        <svg class="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Resultados -->
+            <div id="results-container" class="hidden p-6 text-center">
+                <div id="pass-result" class="hidden">
+                    <div class="text-green-600 text-6xl mb-4">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-2 text-green-600">¡Felicidades, aprobaste el examen de la uni! Gaaa.</h2>
+                </div>
+                
+                <div id="fail-result" class="hidden">
+                    <div class="text-red-600 text-6xl mb-4">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-2 text-red-600">Estudia, sonso. Gaaaaaaaaaaaaa.</h2>
+                </div>
+                
+                <div class="my-6 py-4 border-t border-b">
+                    <div class="mb-2">
+                        <span class="text-gray-600">Estudiante:</span>
+                        <span id="result-name" class="font-medium ml-2"></span>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-gray-600">Correo:</span>
+                        <span id="result-email" class="font-medium ml-2"></span>
+                    </div>
+                    <div class="flex items-center justify-center space-x-2">
+                        <div class="text-gray-800 font-bold text-3xl" id="result-score">0</div>
+                        <div class="text-gray-500 font-medium">/20</div>
+                    </div>
+                </div>
+                
+                <button id="restart-exam" class="bg-blue-600 text-white py-3 px-6 rounded-md font-medium hover:bg-blue-700 transition">
+                    Reiniciar examen
+                </button>
+            </div>
+        </div>
+        
+        <div class="mt-6 text-center text-sm text-gray-500">
+            <p>© 2025 Universidad Profesional. Todos los derechos reservados.</p>
+        </div>
+    </div>
+
+    <script id="app-script">
+        // Datos del examen
+        const examQuestions = [
+            {
+                id: 1,
+                question: "¿Cuántas horas tomaría caminar de Chile a Perú?",
+                options: [
+                    { id: "A", text: "Depende si voy corriendo xd" },
+                    { id: "B", text: "Muchas horas xddd" },
+                    { id: "C", text: "2 meses x si me wuebeoo y me voy a otro país xd" },
+                    { id: "D", text: "1 mes" }
+                ],
+                correctAnswer: "B"
+            },
+            {
+                id: 2,
+                question: "¿Por qué a Pari le dicen kbrito pooo, po kbrito?",
+                options: [
+                    { id: "A", text: "Porque kbroo significa causa en Perú" },
+                    { id: "B", text: "Porque Pari es kbrito" },
+                    { id: "C", text: "Porque a Pari le hacían bullying en Chile y le decían así" },
+                    { id: "D", text: "No hay solución" }
+                ],
+                correctAnswer: "D"
+            },
+            {
+                id: 3,
+                question: "¿Por qué se dice que a Pari lo quisieron violar en la playa?",
+                options: [
+                    { id: "A", text: "Porque el amigo de Pari contó una historia que Pari le temía a la wuaka xdd" },
+                    { id: "B", text: "Porque el hermano de Pari le contó que esos kbros le podían hacer algo a Pari" },
+                    { id: "C", text: "Porque ahh a Pari ya lo violaron esos kbros xddd" },
+                    { id: "D", text: "Porque Pari fue a la playa con Chinchay y casi los violan" },
+                    { id: "E", text: "Xq casi violan a Pari en la playa XD" }
+                ],
+                correctAnswer: "E"
+            },
+            {
+                id: 4,
+                question: "¿Por qué Pari no vino a clases como en 2 bimestres?",
+                options: [
+                    { id: "A", text: "Porque le dio flojera xd" },
+                    { id: "B", text: "Porque taba mal y casi se muere" },
+                    { id: "C", text: "Porque tenía palta con la profesora de ct" },
+                    { id: "D", text: "Porque se demoró caminando de Chile a Perú xd" },
+                    { id: "E", text: "No hay solución" }
+                ],
+                correctAnswer: "E"
+            }
+        ];
+
+        // Variables globales
+        let currentQuestionIndex = 0;
+        let userAnswers = {};
+        let studentName = "";
+        let studentEmail = "";
+
+        // Elementos DOM
+        const registrationForm = document.getElementById("registration-form");
+        const examContainer = document.getElementById("exam-container");
+        const resultsContainer = document.getElementById("results-container");
+        const studentForm = document.getElementById("student-form");
+        const questionContainer = document.getElementById("question-container");
+        const questionProgress = document.getElementById("question-progress");
+        const prevQuestionBtn = document.getElementById("prev-question");
+        const nextQuestionBtn = document.getElementById("next-question");
+
+        // Función para validar el formulario de estudiante
+        studentForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            const nameInput = document.getElementById("student-name");
+            const emailInput = document.getElementById("student-email");
+            const nameError = document.getElementById("name-error");
+            const emailError = document.getElementById("email-error");
+            
+            let isValid = true;
+            
+            // Validar nombre
+            if (!nameInput.value.trim()) {
+                nameError.classList.remove("hidden");
+                isValid = false;
+            } else {
+                nameError.classList.add("hidden");
+            }
+            
+            // Validar email
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(emailInput.value)) {
+                emailError.classList.remove("hidden");
+                isValid = false;
+            } else {
+                emailError.classList.add("hidden");
+            }
+            
+            if (isValid) {
+                // Guardar datos del estudiante
+                studentName = nameInput.value.trim();
+                studentEmail = emailInput.value.trim();
+                
+                // Mostrar loader
+                document.getElementById("start-btn-text").classList.add("hidden");
+                document.getElementById("start-btn-loader").classList.remove("hidden");
+                
+                // Simular carga
+                setTimeout(() => {
+                    // Ocultar formulario y mostrar examen
+                    registrationForm.classList.add("hidden");
+                    examContainer.classList.remove("hidden");
+                    examContainer.classList.add("fade-in");
+                    
+                    // Mostrar nombre del estudiante
+                    document.getElementById("student-name-display").textContent = studentName;
+                    
+                    // Cargar primera pregunta
+                    loadQuestion(currentQuestionIndex);
+                }, 1000);
+            }
+        });
+
+        // Función para cargar una pregunta
+        function loadQuestion(index) {
+            const question = examQuestions[index];
+            questionProgress.textContent = `Pregunta ${index + 1} de ${examQuestions.length}`;
+            
+            // Habilitar/deshabilitar botones de navegación
+            prevQuestionBtn.disabled = index === 0;
+            
+            // Cambiar texto del botón siguiente si es la última pregunta
+            if (index === examQuestions.length - 1) {
+                nextQuestionBtn.textContent = "Terminar examen";
+                nextQuestionBtn.innerHTML = "Terminar examen";
+            } else {
+                nextQuestionBtn.innerHTML = `Siguiente <svg class="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`;
+            }
+            
+            // Construir HTML de la pregunta
+            let questionHTML = `
+                <h3 class="text-xl font-semibold mb-6">${question.question}</h3>
+                <div class="space-y-3">
+            `;
+            
+            // Agregar opciones
+            question.options.forEach(option => {
+                const isSelected = userAnswers[question.id] === option.id;
+                questionHTML += `
+                    <div class="exam-option ${isSelected ? 'selected' : ''} border rounded-lg p-4 flex items-center" data-option="${option.id}">
+                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center ${isSelected ? 'bg-blue-500 border-blue-500' : ''} mr-3">
+                            <span class="text-white text-xs">${isSelected ? '✓' : ''}</span>
+                        </div>
+                        <div>
+                            <span class="font-medium">${option.id}.</span> ${option.text}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            questionHTML += `</div>`;
+            
+            // Insertar HTML en el contenedor
+            questionContainer.innerHTML = questionHTML;
+            
+            // Agregar event listeners a las opciones
+            document.querySelectorAll('.exam-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Quitar selección de todas las opciones
+                    document.querySelectorAll('.exam-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                        const circle = opt.querySelector('div:first-child');
+                        circle.classList.remove('bg-blue-500', 'border-blue-500');
+                        circle.querySelector('span').textContent = '';
+                    });
+                    
+                    // Seleccionar la opción clickeada
+                    this.classList.add('selected');
+                    const circle = this.querySelector('div:first-child');
+                    circle.classList.add('bg-blue-500', 'border-blue-500');
+                    circle.querySelector('span').textContent = '✓';
+                    
+                    // Guardar respuesta
+                    const optionId = this.getAttribute('data-option');
+                    userAnswers[question.id] = optionId;
+                });
+            });
+        }
+
+        // Evento para el botón anterior
+        prevQuestionBtn.addEventListener('click', function() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentQuestionIndex);
+            }
+        });
+
+        // Evento para el botón siguiente
+        nextQuestionBtn.addEventListener('click', function() {
+            if (currentQuestionIndex < examQuestions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+            } else {
+                // Finalizar examen
+                gradeExam();
+            }
+        });
+
+        // Función para calificar el examen
+        function gradeExam() {
+            let score = 0;
+            
+            // Calcular puntuación (5 puntos por respuesta correcta)
+            examQuestions.forEach(question => {
+                if (userAnswers[question.id] === question.correctAnswer) {
+                    score += 5;
+                }
+            });
+            
+            // Mostrar resultados
+            document.getElementById("result-name").textContent = studentName;
+            document.getElementById("result-email").textContent = studentEmail;
+            document.getElementById("result-score").textContent = score;
+            
+            // Mostrar mensaje según aprobación/reprobación
+            if (score >= 11) {
+                document.getElementById("pass-result").classList.remove("hidden");
+            } else {
+                document.getElementById("fail-result").classList.remove("hidden");
+            }
+            
+            // Ocultar examen y mostrar resultados
+            examContainer.classList.add("hidden");
+            resultsContainer.classList.remove("hidden");
+            resultsContainer.classList.add("fade-in");
+        }
+
+        // Evento para reiniciar examen
+        document.getElementById("restart-exam").addEventListener('click', function() {
+            // Reiniciar variables
+            currentQuestionIndex = 0;
+            userAnswers = {};
+            
+            // Ocultar resultados
+            document.getElementById("pass-result").classList.add("hidden");
+            document.getElementById("fail-result").classList.add("hidden");
+            resultsContainer.classList.add("hidden");
+            
+            // Mostrar formulario de registro
+            registrationForm.classList.remove("hidden");
+            
+            // Resetear formulario
+            document.getElementById("student-form").reset();
+            document.getElementById("start-btn-text").classList.remove("hidden");
+            document.getElementById("start-btn-loader").classList.add("hidden");
+        });
+    </script>
+</body>
+</html>
