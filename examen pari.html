@@ -3,82 +3,44 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Examen de Admisión - Jesus Lujan Carrion</title>
+    <title>Examen de Admisión - Universidad Profesional</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style id="app-style">
         html {
             scroll-behavior: smooth;
         }
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f3f4f6;
         }
         .container {
-            max-width: 900px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 2rem 1rem;
         }
         .exam-header {
             text-align: center;
             margin-bottom: 2rem;
-            color: white;
         }
         .exam-container {
-            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.05);
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             overflow: hidden;
-            backdrop-filter: blur(10px);
         }
         .exam-option {
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             cursor: pointer;
-            border: 2px solid #e2e8f0;
-            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-            position: relative;
-            overflow: hidden;
-        }
-        .exam-option::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.5s;
-        }
-        .exam-option:hover::before {
-            left: 100%;
         }
         .exam-option:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-            border-color: #60a5fa;
+            background-color: #f3f4f6;
         }
         .exam-option.selected {
-            background: linear-gradient(145deg, #dbeafe 0%, #bfdbfe 100%);
+            background-color: #dbeafe;
             border-color: #3b82f6;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.25);
-        }
-        .timer {
-            background: linear-gradient(145deg, #fef3c7 0%, #fbbf24 100%);
-            border: 2px solid #f59e0b;
-            animation: pulse 2s infinite;
-        }
-        .timer.warning {
-            background: linear-gradient(145deg, #fee2e2 0%, #f87171 100%);
-            border-color: #ef4444;
-            animation: pulse 1s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
         }
         .loader {
             border: 3px solid #f3f4f6;
@@ -96,106 +58,44 @@
             100% { transform: rotate(360deg); }
         }
         .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
+            animation: fadeIn 0.5s;
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         .question-container {
-            min-height: 400px;
-        }
-        .progress-bar {
-            background: linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%);
-            transition: width 0.3s ease;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-            border: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
-        }
-        .btn-secondary {
-            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-            border: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(107, 114, 128, 0.3);
-        }
-        .btn-secondary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(107, 114, 128, 0.4);
-        }
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        .digital-clock {
-            font-family: 'Courier New', monospace;
-            font-size: 1.5rem;
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
-        .university-logo {
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1.2rem;
-            display: inline-block;
-            margin-bottom: 1rem;
+            min-height: 300px;
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-100">
     <div class="container">
         <div class="exam-header">
-            <div class="university-logo">
-                <i class="fas fa-graduation-cap mr-2"></i>
-                Jesus Lujan Carrion
-            </div>
-            <h1 class="text-4xl font-bold mb-2">Examen de Admisión</h1>
-            <p class="text-xl opacity-90">Sistema de Evaluación Académica 2025</p>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Examen de Admisión</h1>
+            <p class="text-gray-600">Universidad Profesional - 2025</p>
         </div>
         
         <div class="exam-container">
             <!-- Formulario de ingreso -->
-            <div id="registration-form" class="p-8">
-                <div class="text-center mb-8">
-                    <div class="inline-block p-4 bg-blue-100 rounded-full mb-4">
-                        <i class="fas fa-user-edit text-blue-600 text-3xl"></i>
-                    </div>
-                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Información del Estudiante</h2>
-                    <p class="text-gray-600">Complete sus datos para iniciar el examen</p>
-                </div>
-                
-                <form id="student-form" class="space-y-6 max-w-md mx-auto">
+            <div id="registration-form" class="p-6">
+                <h2 class="text-xl font-semibold mb-4">Información del estudiante</h2>
+                <form id="student-form" class="space-y-4">
                     <div>
-                        <label for="student-name" class="block text-gray-700 font-semibold mb-2">
-                            <i class="fas fa-user mr-2 text-blue-600"></i>Nombre completo *
-                        </label>
-                        <input type="text" id="student-name" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" required>
+                        <label for="student-name" class="block text-gray-700 font-medium mb-1">Nombre completo *</label>
+                        <input type="text" id="student-name" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                         <p id="name-error" class="text-red-500 text-sm mt-1 hidden">Por favor ingresa tu nombre completo.</p>
                     </div>
                     
                     <div>
-                        <label for="student-email" class="block text-gray-700 font-semibold mb-2">
-                            <i class="fas fa-envelope mr-2 text-blue-600"></i>Correo electrónico *
-                        </label>
-                        <input type="email" id="student-email" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" required>
+                        <label for="student-email" class="block text-gray-700 font-medium mb-1">Correo electrónico *</label>
+                        <input type="email" id="student-email" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                         <p id="email-error" class="text-red-500 text-sm mt-1 hidden">Por favor ingresa un correo electrónico válido.</p>
                     </div>
                     
                     <div class="pt-4">
-                        <button type="submit" id="start-exam-btn" class="w-full btn-primary text-white py-4 px-6 rounded-lg font-semibold text-lg transition-all">
-                            <span id="start-btn-text">
-                                <i class="fas fa-play mr-2"></i>Iniciar Examen
-                            </span>
+                        <button type="submit" id="start-exam-btn" class="w-full bg-blue-600 text-white py-3 px-6 rounded-md font-medium hover:bg-blue-700 transition">
+                            <span id="start-btn-text">Iniciar examen</span>
                             <span id="start-btn-loader" class="loader hidden"></span>
                         </button>
                     </div>
@@ -204,123 +104,77 @@
             
             <!-- Examen -->
             <div id="exam-container" class="hidden">
-                <!-- Header del examen -->
-                <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h3 class="text-lg font-semibold">
-                                <i class="fas fa-user-circle mr-2"></i>
-                                <span id="student-name-display"></span>
-                            </h3>
-                            <p class="text-blue-100 text-sm">Examen en proceso</p>
-                        </div>
-                        <div class="text-right">
-                            <div id="timer" class="timer px-4 py-2 rounded-lg text-gray-800 digital-clock">
-                                05:00
-                            </div>
-                            <p class="text-blue-100 text-sm mt-1">Tiempo restante</p>
-                        </div>
+                <div class="border-b p-4 flex justify-between items-center bg-gray-50">
+                    <div>
+                        <span id="student-name-display" class="font-medium text-gray-800"></span>
+                    </div>
+                    <div>
+                        <span id="question-progress" class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">Pregunta 1 de 4</span>
                     </div>
                 </div>
                 
-                <!-- Barra de progreso -->
-                <div class="bg-gray-200 h-2">
-                    <div id="progress-bar" class="progress-bar h-2 rounded-full" style="width: 25%"></div>
-                </div>
-                
-                <!-- Indicador de pregunta -->
-                <div class="p-4 bg-gray-50 border-b">
-                    <div class="flex justify-between items-center">
-                        <span id="question-progress" class="bg-blue-100 text-blue-800 font-semibold px-4 py-2 rounded-full">
-                            Pregunta 1 de 4
-                        </span>
-                        <div class="text-sm text-gray-600">
-                            <i class="fas fa-clock mr-1"></i>
-                            <span id="question-timer">1:15</span> por pregunta
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="p-8 question-container">
-                    <div id="question-container" class="mb-8">
+                <div class="p-6 question-container">
+                    <div id="question-container" class="mb-6">
                         <!-- Preguntas se cargarán dinámicamente -->
                     </div>
                 </div>
                 
-                <!-- Controles de navegación -->
-                <div class="p-6 bg-gray-50 border-t flex justify-between items-center">
-                    <button id="prev-question" class="btn-secondary text-white py-3 px-6 rounded-lg font-semibold transition-all flex items-center disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                        <i class="fas fa-arrow-left mr-2"></i>
+                <div class="p-4 border-t bg-gray-50 flex justify-between">
+                    <button id="prev-question" class="bg-gray-200 text-gray-700 py-2 px-4 rounded-md font-medium hover:bg-gray-300 transition flex items-center disabled:opacity-50" disabled>
+                        <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
                         Anterior
                     </button>
                     
-                    <div class="flex space-x-2">
-                        <div id="question-dots" class="flex space-x-2">
-                            <!-- Indicadores de progreso -->
-                        </div>
-                    </div>
-                    
-                    <button id="next-question" class="btn-primary text-white py-3 px-6 rounded-lg font-semibold transition-all flex items-center">
+                    <button id="next-question" class="bg-blue-600 text-white py-2 px-4 rounded-md font-medium hover:bg-blue-700 transition flex items-center">
                         Siguiente
-                        <i class="fas fa-arrow-right ml-2"></i>
+                        <svg class="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
                     </button>
                 </div>
             </div>
             
             <!-- Resultados -->
-            <div id="results-container" class="hidden p-8 text-center">
+            <div id="results-container" class="hidden p-6 text-center">
                 <div id="pass-result" class="hidden">
-                    <div class="inline-block p-6 bg-green-100 rounded-full mb-6">
-                        <i class="fas fa-trophy text-green-600 text-5xl"></i>
+                    <div class="text-green-600 text-6xl mb-4">
+                        <i class="fas fa-check-circle"></i>
                     </div>
-                    <h2 class="text-3xl font-bold mb-4 text-green-600">¡Felicidades, aprobaste el examen!</h2>
-                    <p class="text-gray-600 mb-6">Has demostrado tus conocimientos satisfactoriamente</p>
+                    <h2 class="text-2xl font-bold mb-2 text-green-600">¡Felicidades, aprobaste el examen de la uni! Gaaa.</h2>
                 </div>
                 
                 <div id="fail-result" class="hidden">
-                    <div class="inline-block p-6 bg-red-100 rounded-full mb-6">
-                        <i class="fas fa-times-circle text-red-600 text-5xl"></i>
+                    <div class="text-red-600 text-6xl mb-4">
+                        <i class="fas fa-times-circle"></i>
                     </div>
-                    <h2 class="text-3xl font-bold mb-4 text-red-600">Necesitas estudiar más</h2>
-                    <p class="text-gray-600 mb-6">No te desanimes, puedes volver a intentarlo</p>
+                    <h2 class="text-2xl font-bold mb-2 text-red-600">Estudia, sonso. Gaaaaaaaaaaaaa.</h2>
                 </div>
                 
-                <!-- Tarjeta de resultados -->
-                <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 mb-8 mx-auto max-w-md">
-                    <div class="mb-6">
-                        <div class="text-gray-600 text-sm mb-2">Estudiante:</div>
-                        <div id="result-name" class="font-bold text-lg text-gray-800"></div>
+                <div class="my-6 py-4 border-t border-b">
+                    <div class="mb-2">
+                        <span class="text-gray-600">Estudiante:</span>
+                        <span id="result-name" class="font-medium ml-2"></span>
                     </div>
-                    <div class="mb-6">
-                        <div class="text-gray-600 text-sm mb-2">Correo electrónico:</div>
-                        <div id="result-email" class="font-medium text-gray-700"></div>
+                    <div class="mb-4">
+                        <span class="text-gray-600">Correo:</span>
+                        <span id="result-email" class="font-medium ml-2"></span>
                     </div>
-                    <div class="mb-6">
-                        <div class="text-gray-600 text-sm mb-2">Tiempo utilizado:</div>
-                        <div id="result-time" class="font-medium text-gray-700"></div>
-                    </div>
-                    <div class="border-t pt-6">
-                        <div class="text-gray-600 text-sm mb-2">Puntuación final:</div>
-                        <div class="flex items-center justify-center space-x-2">
-                            <div class="text-4xl font-bold text-blue-600" id="result-score">0</div>
-                            <div class="text-2xl text-gray-400">/</div>
-                            <div class="text-2xl text-gray-600">20</div>
-                        </div>
-                        <div class="text-sm text-gray-500 mt-2">
-                            <span id="result-percentage">0%</span> de respuestas correctas
-                        </div>
+                    <div class="flex items-center justify-center space-x-2">
+                        <div class="text-gray-800 font-bold text-3xl" id="result-score">0</div>
+                        <div class="text-gray-500 font-medium">/20</div>
                     </div>
                 </div>
                 
-                <button id="restart-exam" class="btn-primary text-white py-4 px-8 rounded-lg font-semibold text-lg transition-all">
-                    <i class="fas fa-redo mr-2"></i>
-                    Reiniciar Examen
+                <button id="restart-exam" class="bg-blue-600 text-white py-3 px-6 rounded-md font-medium hover:bg-blue-700 transition">
+                    Reiniciar examen
                 </button>
             </div>
         </div>
         
-        <div class="mt-8 text-center text-white opacity-75">
-            <p class="text-sm">© 2025 Jesus Lujan Carrion. Todos los derechos reservados.</p>
+        <div class="mt-6 text-center text-sm text-gray-500">
+            <p>© 2025 Universidad Profesional. Todos los derechos reservados.</p>
         </div>
     </div>
 
@@ -380,9 +234,6 @@
         let userAnswers = {};
         let studentName = "";
         let studentEmail = "";
-        let examStartTime = null;
-        let examTimer = null;
-        let timeRemaining = 300; // 5 minutos en segundos
 
         // Elementos DOM
         const registrationForm = document.getElementById("registration-form");
@@ -393,58 +244,6 @@
         const questionProgress = document.getElementById("question-progress");
         const prevQuestionBtn = document.getElementById("prev-question");
         const nextQuestionBtn = document.getElementById("next-question");
-        const timerDisplay = document.getElementById("timer");
-        const progressBar = document.getElementById("progress-bar");
-
-        // Función para formatear tiempo
-        function formatTime(seconds) {
-            const minutes = Math.floor(seconds / 60);
-            const remainingSeconds = seconds % 60;
-            return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-        }
-
-        // Función para actualizar el cronómetro
-        function updateTimer() {
-            if (timeRemaining <= 0) {
-                clearInterval(examTimer);
-                Swal.fire({
-                    title: '¡Tiempo agotado!',
-                    text: 'El examen ha terminado automáticamente',
-                    icon: 'warning',
-                    confirmButtonText: 'Ver resultados'
-                }).then(() => {
-                    gradeExam();
-                });
-                return;
-            }
-
-            timerDisplay.textContent = formatTime(timeRemaining);
-            
-            // Cambiar color cuando queda 1 minuto o menos
-            if (timeRemaining <= 60) {
-                timerDisplay.classList.add('warning');
-            }
-            
-            timeRemaining--;
-        }
-
-        // Función para iniciar el cronómetro
-        function startTimer() {
-            examStartTime = new Date();
-            examTimer = setInterval(updateTimer, 1000);
-        }
-
-        // Función para crear indicadores de progreso
-        function createProgressDots() {
-            const dotsContainer = document.getElementById("question-dots");
-            dotsContainer.innerHTML = "";
-            
-            for (let i = 0; i < examQuestions.length; i++) {
-                const dot = document.createElement("div");
-                dot.className = `w-4 h-4 rounded-full border-2 ${i === currentQuestionIndex ? 'bg-blue-500 border-blue-500' : userAnswers[examQuestions[i].id] ? 'bg-green-500 border-green-500' : 'bg-gray-300 border-gray-300'}`;
-                dotsContainer.appendChild(dot);
-            }
-        }
 
         // Función para validar el formulario de estudiante
         studentForm.addEventListener("submit", function(e) {
@@ -493,15 +292,9 @@
                     // Mostrar nombre del estudiante
                     document.getElementById("student-name-display").textContent = studentName;
                     
-                    // Iniciar cronómetro
-                    startTimer();
-                    
-                    // Crear indicadores de progreso
-                    createProgressDots();
-                    
                     // Cargar primera pregunta
                     loadQuestion(currentQuestionIndex);
-                }, 1500);
+                }, 1000);
             }
         });
 
@@ -510,44 +303,33 @@
             const question = examQuestions[index];
             questionProgress.textContent = `Pregunta ${index + 1} de ${examQuestions.length}`;
             
-            // Actualizar barra de progreso
-            const progressPercentage = ((index + 1) / examQuestions.length) * 100;
-            progressBar.style.width = `${progressPercentage}%`;
-            
             // Habilitar/deshabilitar botones de navegación
             prevQuestionBtn.disabled = index === 0;
             
             // Cambiar texto del botón siguiente si es la última pregunta
             if (index === examQuestions.length - 1) {
-                nextQuestionBtn.innerHTML = '<i class="fas fa-flag-checkered mr-2"></i>Finalizar Examen';
+                nextQuestionBtn.textContent = "Terminar examen";
+                nextQuestionBtn.innerHTML = "Terminar examen";
             } else {
-                nextQuestionBtn.innerHTML = 'Siguiente <i class="fas fa-arrow-right ml-2"></i>';
+                nextQuestionBtn.innerHTML = `Siguiente <svg class="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`;
             }
             
             // Construir HTML de la pregunta
             let questionHTML = `
-                <div class="mb-8">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
-                            <span class="text-blue-600 font-bold text-lg">${index + 1}</span>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-800">${question.question}</h3>
-                    </div>
-                </div>
-                <div class="space-y-4">
+                <h3 class="text-xl font-semibold mb-6">${question.question}</h3>
+                <div class="space-y-3">
             `;
             
             // Agregar opciones
             question.options.forEach(option => {
                 const isSelected = userAnswers[question.id] === option.id;
                 questionHTML += `
-                    <div class="exam-option ${isSelected ? 'selected' : ''} rounded-xl p-6 flex items-center cursor-pointer transition-all" data-option="${option.id}">
-                        <div class="w-8 h-8 rounded-full border-2 border-gray-400 flex items-center justify-center ${isSelected ? 'bg-blue-500 border-blue-500' : ''} mr-4 flex-shrink-0">
-                            <i class="fas fa-check text-white text-sm ${isSelected ? '' : 'hidden'}"></i>
+                    <div class="exam-option ${isSelected ? 'selected' : ''} border rounded-lg p-4 flex items-center" data-option="${option.id}">
+                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center ${isSelected ? 'bg-blue-500 border-blue-500' : ''} mr-3">
+                            <span class="text-white text-xs">${isSelected ? '✓' : ''}</span>
                         </div>
-                        <div class="flex-1">
-                            <span class="font-bold text-lg text-blue-600 mr-3">${option.id}.</span>
-                            <span class="text-gray-700 text-lg">${option.text}</span>
+                        <div>
+                            <span class="font-medium">${option.id}.</span> ${option.text}
                         </div>
                     </div>
                 `;
@@ -558,9 +340,6 @@
             // Insertar HTML en el contenedor
             questionContainer.innerHTML = questionHTML;
             
-            // Actualizar indicadores de progreso
-            createProgressDots();
-            
             // Agregar event listeners a las opciones
             document.querySelectorAll('.exam-option').forEach(option => {
                 option.addEventListener('click', function() {
@@ -569,21 +348,18 @@
                         opt.classList.remove('selected');
                         const circle = opt.querySelector('div:first-child');
                         circle.classList.remove('bg-blue-500', 'border-blue-500');
-                        circle.querySelector('i').classList.add('hidden');
+                        circle.querySelector('span').textContent = '';
                     });
                     
                     // Seleccionar la opción clickeada
                     this.classList.add('selected');
                     const circle = this.querySelector('div:first-child');
                     circle.classList.add('bg-blue-500', 'border-blue-500');
-                    circle.querySelector('i').classList.remove('hidden');
+                    circle.querySelector('span').textContent = '✓';
                     
                     // Guardar respuesta
                     const optionId = this.getAttribute('data-option');
                     userAnswers[question.id] = optionId;
-                    
-                    // Actualizar indicadores
-                    createProgressDots();
                 });
             });
         }
@@ -603,7 +379,6 @@
                 loadQuestion(currentQuestionIndex);
             } else {
                 // Finalizar examen
-                clearInterval(examTimer);
                 gradeExam();
             }
         });
@@ -619,20 +394,10 @@
                 }
             });
             
-            // Calcular tiempo utilizado
-            const examEndTime = new Date();
-            const timeUsed = Math.floor((examEndTime - examStartTime) / 1000);
-            const timeUsedFormatted = formatTime(timeUsed);
-            
-            // Calcular porcentaje
-            const percentage = Math.round((score / 20) * 100);
-            
             // Mostrar resultados
             document.getElementById("result-name").textContent = studentName;
             document.getElementById("result-email").textContent = studentEmail;
             document.getElementById("result-score").textContent = score;
-            document.getElementById("result-time").textContent = timeUsedFormatted;
-            document.getElementById("result-percentage").textContent = `${percentage}%`;
             
             // Mostrar mensaje según aprobación/reprobación
             if (score >= 11) {
@@ -649,18 +414,9 @@
 
         // Evento para reiniciar examen
         document.getElementById("restart-exam").addEventListener('click', function() {
-            // Limpiar cronómetro
-            clearInterval(examTimer);
-            
             // Reiniciar variables
             currentQuestionIndex = 0;
             userAnswers = {};
-            timeRemaining = 300;
-            examStartTime = null;
-            
-            // Resetear display del cronómetro
-            timerDisplay.textContent = "05:00";
-            timerDisplay.classList.remove('warning');
             
             // Ocultar resultados
             document.getElementById("pass-result").classList.add("hidden");
@@ -674,14 +430,6 @@
             document.getElementById("student-form").reset();
             document.getElementById("start-btn-text").classList.remove("hidden");
             document.getElementById("start-btn-loader").classList.add("hidden");
-        });
-
-        // Prevenir recarga de página durante el examen
-        window.addEventListener('beforeunload', function(e) {
-            if (examStartTime && !resultsContainer.classList.contains('hidden')) {
-                e.preventDefault();
-                e.returnValue = '';
-            }
         });
     </script>
 </body>
