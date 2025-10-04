@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Universidad Garcia pari - Excelencia Académica</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -306,7 +307,39 @@
 }
 /* ... PEGA EL RESTO DEL CÓDIGO CSS AQUÍ ... */
 /* --- FIN CÓDIGO DE ANIMACIÓN --- */
-
+/* Animaciones Personalizadas */
+    /* Animaciones Personalizadas */
+    @keyframes bounceIn {
+        0%, 20%, 40%, 60%, 80%, 100% {
+            transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+        0% {
+            opacity: 0;
+            transform: scale3d(.3, .3, .3);
+        }
+        20% {
+            transform: scale3d(1.1, 1.1, 1.1);
+        }
+        40% {
+            transform: scale3d(.9, .9, .9);
+        }
+        60% {
+            opacity: 1;
+            transform: scale3d(1.03, 1.03, 1.03);
+        }
+        80% {
+            transform: scale3d(.97, .97, .97);
+        }
+        100% {
+            opacity: 1;
+            transform: scale3d(1, 1, 1);
+        }
+    }
+    .animate-bounceIn {
+        animation: bounceIn 1s; /* Duración de 1 segundo */
+        animation-delay: 0.3s; /* Retraso de 0.3 segundos */
+        animation-fill-mode: both;
+    }
 </style>
     </style>
 </head>
@@ -417,7 +450,7 @@
     <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div class="flex justify-center">
-                <img src="https://i.postimg.cc/v864Zvtt/Imagen-de-Whats-App-2025-10-03-a-las-10-53-37-ac07eb72.jpg" alt="Foto del Fundador" class="rounded-lg shadow-xl w-4/5 md:w-full h-auto border-4 border-gray-400 transform hover:scale-105 transition-transform duration-300">
+            <img src="https://i.postimg.cc/v864Zvtt/Imagen-de-Whats-App-2025-10-03-a-las-10-53-37-ac07eb72.jpg" alt="Foto del Fundador" class="rounded-lg shadow-xl w-4/5 md:w-full h-auto transform hover:scale-105 transition-transform duration-300" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="300">
             </div>
             <div class="text-center md:text-left">
                 <h2 class="text-3xl md:text-4xl font-bold text-white mb-3">Conoce a Nuestro Fundador</h2>
@@ -1650,6 +1683,9 @@
             },
         });
     </script>
-    
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
 </body>
 </html>
