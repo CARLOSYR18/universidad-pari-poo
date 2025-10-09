@@ -408,6 +408,45 @@
                 animation-delay: 0.3s;
                 animation-fill-mode: both;
             }
+            <head>
+    // ... existing code ...
+    
+    <style>
+        @keyframes fade-in-up {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slide-in-bottom {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fade-in-up 0.8s ease-out forwards;
+        }
+
+        .animate-slide-in-bottom {
+            animation: slide-in-bottom 0.8s ease-out forwards;
+        }
+
+        .delay-300 {
+            animation-delay: 300ms;
+        }
+    </style>
+</head>
         </style>
     </head>
     <body class="bg-gray-50">
@@ -541,27 +580,148 @@
             </div>
         </section>
 
-        <!-- Founder Section -->
-        <section class="bg-gray-800 py-16">
-            <div class="container mx-auto px-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                    <div class="flex justify-center" data-aos="fade-right" data-aos-duration="1000">
-                        <img src="https://i.postimg.cc/v864Zvtt/Imagen-de-Whats-App-2025-10-03-a-las-10-53-37-ac07eb72.jpg" alt="Foto del Fundador" class="rounded-lg shadow-xl w-4/5 md:w-full h-auto">
-                    </div>
+        <section id="admisiones" class="section bg-[#FFE135] min-h-screen relative animate-fade-in-up">
+    <!-- Logo UPN y redes sociales en la misma altura -->
+    <div class="absolute top-8 w-full px-8 flex justify-between items-center">
+        <!-- Logo UPN -->
+        <div class="flex items-center space-x-4">
+            <div class="h-16 w-16 rounded-full overflow-hidden bg-white">
+                <img src="https://i.postimg.cc/Wb0M1C8V/image.jpg" alt="Logo UPN" class="h-full w-full object-cover">
+            </div>
+            <div>
+                <span class="text-4xl font-bold">
+                    <span class="text-blue-500">UP</span><span class="text-black">25</span>
+                </span>
+                <div class="text-black text-sm font-medium leading-tight">Jesus Lujan Carrion</div>
+            </div>
+        </div>
 
-                    <div class="text-center md:text-left" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
-                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-3">Conoce a Nuestro Fundador</h2>
-                        <p class="text-xl font-semibold text-blue-400 mb-5">Jesus Lujan Carrion</p>
-                        <p class="text-gray-300 mb-3 text-left">
-                            Con una visión clara de transformar la educación y el futuro de nuestra región, Jesus Lujan Carrion sentó las bases de lo que hoy es una institución líder en excelencia académica. Su compromiso con la innovación y el acceso a una educación de calidad ha sido el pilar fundamental de nuestra universidad desde su creación.
-                        </p>
-                        <p class="text-gray-300 text-left">
-                            "Creemos que cada estudiante tiene el potencial de cambiar el mundo. Nuestra misión es darles las herramientas, el conocimiento y la confianza para que lo logren". Este lema sigue guiando cada uno de nuestros pasos.
-                        </p>
+         <!-- Iconos de redes sociales -->
+        <div class="flex space-x-6">
+            <a href="#" class="text-gray-800 hover:text-blue-600 transition-colors duration-300">
+                <i class="fab fa-facebook-f text-3xl"></i>
+            </a>
+            <a href="#" class="text-gray-800 hover:text-gray-600 transition-colors duration-300">
+                <i class="far fa-envelope text-3xl"></i>
+            </a>
+            <a href="#" class="text-gray-800 hover:text-pink-600 transition-colors duration-300">
+                <i class="fab fa-instagram text-3xl"></i>
+            </a>
+            <a href="#" class="text-gray-800 hover:text-red-600 transition-colors duration-300">
+                <i class="fab fa-youtube text-3xl"></i>
+            </a>
+            <a href="#" class="text-gray-800 hover:text-blue-400 transition-colors duration-300">
+                <i class="fab fa-linkedin-in text-3xl"></i>
+            </a>
+            <a href="#" class="text-gray-800 hover:text-black transition-colors duration-300">
+                <i class="fab fa-tiktok text-3xl"></i>
+            </a>
+        </div>
+    </div>
+   <div class="container mx-auto px-4 py-16">
+        <!-- Título centrado -->
+        <div class="text-center mb-12 animate-slide-in-bottom">
+            <h2 class="text-5xl md:text-6xl font-bold text-gray-800">TÚ DECIDES</h2>
+            <h3 class="text-4xl md:text-5xl font-bold text-gray-800">CÓMO ESTUDIAR</h3>
+        </div>
+        <div class="flex flex-col md:flex-row gap-8">
+                      <!-- Contenedor flex para imágenes y formulario -->
+        <div class="flex flex-col md:flex-row gap-8">
+            <!-- Columna izquierda para las imágenes -->
+            <div class="md:w-7/12">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="relative overflow-hidden rounded-lg h-[400px]">
+                        <div class="absolute top-0 left-0 bg-purple-600 text-white py-1 px-4 rounded-full text-sm font-bold z-10">PRESENCIAL</div>
+                        <img src="https://i.postimg.cc/63pZHPVc/unnamed.jpg" alt="Estudiante presencial" class="w-full h-full object-cover rounded-lg">
+                    </div>
+                    
+                    <div class="relative overflow-hidden rounded-lg h-[400px]">
+                        <div class="absolute top-0 left-0 bg-blue-400 text-white py-1 px-4 rounded-full text-sm font-bold z-10">SEMI-PRESENCIAL</div>
+                        <img src="https://i.postimg.cc/CK1D7t4h/Gemini-Generated-Image-3b18m43b18m43b18.png" alt="Estudiante semi-presencial" class="w-full h-full object-cover rounded-lg">
+                    </div>
+                    
+                    <div class="relative overflow-hidden rounded-lg h-[400px]">
+                        <div class="absolute top-0 left-0 bg-purple-600 text-white py-1 px-4 rounded-full text-sm font-bold z-10">100% VIRTUAL</div>
+                        <img src="https://i.postimg.cc/Wb0M1C8V/image.jpg" alt="Estudiante virtual" class="w-full h-full object-cover rounded-lg">
                     </div>
                 </div>
+                <!-- Botón de WhatsApp -->
+                <div class="flex justify-center mt-6">
+                    <a href="https://wa.me/56967028321" target="_blank" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg flex items-center transition-colors duration-300">
+                        <i class="fab fa-whatsapp text-2xl mr-2"></i>
+                        Contáctanos
+                    </a>
+                </div>
             </div>
-        </section>
+
+            <!-- Columna derecha para el formulario -->
+            <div class="md:w-5/12 mt-8 md:mt-0">
+                <div class="bg-white rounded-lg p-8 shadow-lg">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">DEJA TUS DATOS Y</h3>
+                    <h4 class="text-lg font-bold text-gray-800 mb-6">TE CONTACTAREMOS EN BREVES MINUTOS</h4>
+                    
+                    <form class="space-y-4">
+                        <div class="flex gap-4 mb-4">
+                            <label class="flex items-center">
+                                <input type="radio" name="tipo" value="distancia" checked class="mr-2">
+                                <span>Carreras a distancia</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="tipo" value="pregrado" class="mr-2">
+                                <span>Pregrado</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="tipo" value="gente" class="mr-2">
+                                <span>Carreras gente que trabaja</span>
+                            </label>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="text" placeholder="Nombres" class="w-full px-4 py-2 border rounded">
+                            <input type="text" placeholder="Apellidos" class="w-full px-4 py-2 border rounded">
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="text" placeholder="DNI" class="w-full px-4 py-2 border rounded">
+                            <input type="text" placeholder="Celular" class="w-full px-4 py-2 border rounded">
+                        </div>
+                        
+                        <input type="email" placeholder="Correo electrónico" class="w-full px-4 py-2 border rounded">
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <select class="w-full px-4 py-2 border rounded">
+                                <option>Elige una carrera</option>
+                            </select>
+                            <select class="w-full px-4 py-2 border rounded">
+                                <option>Departamento de resid.</option>
+                            </select>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <label class="flex items-center text-sm">
+                                <input type="checkbox" class="mr-2">
+                                <span>Autorizo el tratamiento de mis datos personales para finalidades informativas y comerciales...</span>
+                            </label>
+                            <label class="flex items-center text-sm">
+                                <input type="checkbox" class="mr-2">
+                                <span>Opcionalmente, autorizo el tratamiento de mis datos personales para las Finalidades Comerciales Adicionales...</span>
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-yellow-400 text-black font-bold py-3 px-6 rounded hover:bg-yellow-500 transition-colors">Enviar</button>
+                    </form>
+                </div>
+               <a href="examen pari.html" class="absolute bottom-24 left-4 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
+    <i class="fas fa-file-alt mr-2"></i> Examen de Admisión
+</a>
+
+                    </a>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</section>
 
         <!-- Programas Section -->
         <section id="programas" class="section bg-white">
@@ -673,109 +833,27 @@
             </div>
         </section>
 
- <section id="admisiones" class="section bg-[#FFE135] min-h-screen relative">
-    <!-- Logo UPN -->
-    <div class="absolute top-8 left-8 flex items-center space-x-4">
-        <div class="h-16 w-16 rounded-full overflow-hidden bg-white">
-            <img src="https://i.postimg.cc/Wb0M1C8V/image.jpg" alt="Logo UPN" class="h-full w-full object-cover">
-        </div>
-        <div>
-            <span class="text-4xl font-bold">
-                <span class="text-blue-500">UP</span><span class="text-black">25</span>
-            </span>
-            <div class="text-black text-sm font-medium leading-tight">Jesus Lujan Carrion</div>
-        </div>
-    </div>
+ <!-- Founder Section -->
+        <section class="bg-gray-800 py-16">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div class="flex justify-center" data-aos="fade-right" data-aos-duration="1000">
+                        <img src="https://i.postimg.cc/v864Zvtt/Imagen-de-Whats-App-2025-10-03-a-las-10-53-37-ac07eb72.jpg" alt="Foto del Fundador" class="rounded-lg shadow-xl w-4/5 md:w-full h-auto">
+                    </div>
 
-    <div class="container mx-auto px-4 py-16">
-        <div class="text-center mb-12">
-           <h2 class="text-5xl md:text-6xl font-bold text-gray-800">TÚ DECIDES</h2>
-            <h3 class="text-2xl md:text-3xl font-bold text-gray-800">CÓMO ESTUDIAR</h3>
-        </div>
-        
-        <div class="flex flex-col md:flex-row gap-8">
-            <!-- Columna izquierda para las imágenes -->
-            <div class="md:w-7/12">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="relative overflow-hidden rounded-lg h-[400px]">
-                        <div class="absolute top-0 left-0 bg-purple-600 text-white py-1 px-4 rounded-full text-sm font-bold z-10">PRESENCIAL</div>
-                        <img src="https://i.postimg.cc/63pZHPVc/unnamed.jpg" alt="Estudiante presencial" class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    
-                    <div class="relative overflow-hidden rounded-lg h-[400px]">
-                        <div class="absolute top-0 left-0 bg-blue-400 text-white py-1 px-4 rounded-full text-sm font-bold z-10">SEMI-PRESENCIAL</div>
-                        <img src="https://i.postimg.cc/CK1D7t4h/Gemini-Generated-Image-3b18m43b18m43b18.png" alt="Estudiante semi-presencial" class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    
-                    <div class="relative overflow-hidden rounded-lg h-[400px]">
-                        <div class="absolute top-0 left-0 bg-purple-600 text-white py-1 px-4 rounded-full text-sm font-bold z-10">100% VIRTUAL</div>
-                        <img src="https://i.postimg.cc/Wb0M1C8V/image.jpg" alt="Estudiante virtual" class="w-full h-full object-cover rounded-lg">
+                    <div class="text-center md:text-left" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-3">Conoce a Nuestro Fundador</h2>
+                        <p class="text-xl font-semibold text-blue-400 mb-5">Jesus Lujan Carrion</p>
+                        <p class="text-gray-300 mb-3 text-left">
+                            Con una visión clara de transformar la educación y el futuro de nuestra región, Jesus Lujan Carrion sentó las bases de lo que hoy es una institución líder en excelencia académica. Su compromiso con la innovación y el acceso a una educación de calidad ha sido el pilar fundamental de nuestra universidad desde su creación.
+                        </p>
+                        <p class="text-gray-300 text-left">
+                            "Creemos que cada estudiante tiene el potencial de cambiar el mundo. Nuestra misión es darles las herramientas, el conocimiento y la confianza para que lo logren". Este lema sigue guiando cada uno de nuestros pasos.
+                        </p>
                     </div>
                 </div>
             </div>
-
-
-            <!-- Columna derecha para el formulario -->
-            <div class="md:w-5/12">
-                <div class="bg-white rounded-lg p-8 shadow-lg">
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">DEJA TUS DATOS Y</h3>
-                    <h4 class="text-lg font-bold text-gray-800 mb-6">TE CONTACTAREMOS EN BREVES MINUTOS</h4>
-                    
-                    <form class="space-y-4">
-                        <div class="flex gap-4 mb-4">
-                            <label class="flex items-center">
-                                <input type="radio" name="tipo" value="distancia" checked class="mr-2">
-                                <span>Carreras a distancia</span>
-                            </label>
-                            <label class="flex items-center">
-                                <input type="radio" name="tipo" value="pregrado" class="mr-2">
-                                <span>Pregrado</span>
-                            </label>
-                            <label class="flex items-center">
-                                <input type="radio" name="tipo" value="gente" class="mr-2">
-                                <span>Carreras gente que trabaja</span>
-                            </label>
-                        </div>
-                        
-                        <div class="grid grid-cols-2 gap-4">
-                            <input type="text" placeholder="Nombres" class="w-full px-4 py-2 border rounded">
-                            <input type="text" placeholder="Apellidos" class="w-full px-4 py-2 border rounded">
-                        </div>
-                        
-                        <div class="grid grid-cols-2 gap-4">
-                            <input type="text" placeholder="DNI" class="w-full px-4 py-2 border rounded">
-                            <input type="text" placeholder="Celular" class="w-full px-4 py-2 border rounded">
-                        </div>
-                        
-                        <input type="email" placeholder="Correo electrónico" class="w-full px-4 py-2 border rounded">
-                        
-                        <div class="grid grid-cols-2 gap-4">
-                            <select class="w-full px-4 py-2 border rounded">
-                                <option>Elige una carrera</option>
-                            </select>
-                            <select class="w-full px-4 py-2 border rounded">
-                                <option>Departamento de resid.</option>
-                            </select>
-                        </div>
-                        
-                        <div class="space-y-2">
-                            <label class="flex items-center text-sm">
-                                <input type="checkbox" class="mr-2">
-                                <span>Autorizo el tratamiento de mis datos personales para finalidades informativas y comerciales...</span>
-                            </label>
-                            <label class="flex items-center text-sm">
-                                <input type="checkbox" class="mr-2">
-                                <span>Opcionalmente, autorizo el tratamiento de mis datos personales para las Finalidades Comerciales Adicionales...</span>
-                            </label>
-                        </div>
-                        
-                        <button type="submit" class="w-full bg-yellow-400 text-black font-bold py-3 px-6 rounded hover:bg-yellow-500 transition-colors">Enviar</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+        </section>
     
     
        <section class="bg-blue-50 py-16">
